@@ -26,7 +26,8 @@
   };
 
   # --- ДИСПЛЕЙНЫЙ МЕНЕДЖЕР (greeter) ---
-  services.displayManager.ly.enable = true;
+  # GDM — графический экран входа (как было до перехода на ly)
+  services.displayManager.gdm.enable = true;
 
   # --- ШРИФТЫ ---
   fonts.packages = with pkgs; [
