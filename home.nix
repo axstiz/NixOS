@@ -253,9 +253,9 @@ in
         ", XF86PowerOff, exec, serpantinum lock"
 
         ", Print, exec, serpantinum screenshot"
-        ", SHIFT, Print, exec, serpantinum screenshot --edit"
-        ", SUPER, Print, exec, serpantinum screenshot --full"
-        ", SUPER, SHIFT, Print, exec, serpantinum screenshot --full --edit"
+        "SHIFT, Print, exec, serpantinum screenshot --edit"
+        "SUPER, Print, exec, serpantinum screenshot --full"
+        "SUPER SHIFT, Print, exec, serpantinum screenshot --full --edit"
       ];
     };
   };
