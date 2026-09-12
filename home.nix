@@ -20,7 +20,9 @@ in
   # --- Caelestia shell (панель, лаунчер, шторки, экран блокировки) ---
   programs.caelestia = {
     enable = true;
-    systemd.enable = true; # автозапуск через графическую сессию (UWSM)
+    # Шелл стартуем через exec-once в Hyprland (см. ниже), как в личном конфиге —
+    # под GDM без UWSM systemd-сервис graphical-session.target не запускается.
+    systemd.enable = false;
     cli.enable = true;
   };
 
@@ -33,7 +35,92 @@ in
       "$mainMod" = "SUPER";
 
       exec-once = [
-        "awww img $HOME/.config/awww/wallpaper.png"
+        "caelestia-shell"
+        "awww img ${config.home.homeDirectory}/.config/awww/wallpaper.png"
+      ];
+
+      env = [
+        "XCURSOR_SIZE,24"
+        "HYPRCURSOR_SIZE,24"
+      ];
+
+      monitor = [
+        "eDP-1,1920x1080@60,0x0,1"
+      ];
+
+      general = {
+        gaps_in = 5;
+        gaps_out = 20;
+        border_size = 2;
+        resize_on_border = false;
+        allow_tearing = false;
+        layout = "dwindle";
+        "col.active_border" = "rgba(33ccffee) rgba(00ff99ee) 45deg";
+        "col.inactive_border" = "rgba(595959aa)";
+      };
+
+      decoration = {
+        rounding = 10;
+        rounding_power = 2;
+        active_opacity = 1.0;
+        inactive_opacity = 1.0;
+
+        shadow = {
+          enabled = true;
+          range = 4;
+          render_power = 3;
+          color = "rgba(1a1a1aee)";
+        };
+
+        blur = {
+          enabled = true;
+          size = 3;
+          passes = 1;
+          vibrancy = 0.1696;
+        };
+      };
+
+      animations = {
+        enabled = true;
+        bezier = [
+          "easeOutQuint, 0.23, 1, 0.32, 1"
+          "easeInOutCubic, 0.65, 0.05, 0.36, 1"
+          "linear, 0, 0, 1, 1"
+          "almostLinear, 0.5, 0.5, 0.75, 1"
+          "quick, 0.15, 0, 0.1, 1"
+        ];
+        animation = [
+          "global, 1, 10, default"
+          "border, 1, 5.39, easeOutQuint"
+          "windows, 1, 4.79, easeOutQuint"
+          "windowsIn, 1, 4.1, easeOutQuint, popin 87%"
+          "windowsOut, 1, 1.49, linear, popin 87%"
+          "fadeIn, 1, 1.73, almostLinear"
+          "fadeOut, 1, 1.46, almostLinear"
+          "fade, 1, 3.03, quick"
+          "layers, 1, 3.81, easeOutQuint"
+          "layersIn, 1, 4, easeOutQuint, fade"
+          "layersOut, 1, 1.5, linear, fade"
+          "fadeLayersIn, 1, 1.79, almostLinear"
+          "fadeLayersOut, 1, 1.39, almostLinear"
+          "workspaces, 1, 1.94, almostLinear, fade"
+          "workspacesIn, 1, 1.21, almostLinear, fade"
+          "workspacesOut, 1, 1.94, almostLinear, fade"
+          "zoomFactor, 1, 7, quick"
+        ];
+      };
+
+      dwindle = {
+        pseudotile = true;
+        preserve_split = true;
+      };
+
+      master = {
+        new_status = "master";
+      };
+
+      gesture = [
+        "3, horizontal, workspace"
       ];
 
       misc = {
@@ -63,7 +150,7 @@ in
         (ws "7")
         (ws "8")
         (ws "9")
-        (ws "0")
+        "$mainMod, 0, workspace, 10"
         (wsMove "1")
         (wsMove "2")
         (wsMove "3")
@@ -73,7 +160,7 @@ in
         (wsMove "7")
         (wsMove "8")
         (wsMove "9")
-        (wsMove "0")
+        "$mainMod SHIFT, 0, movetoworkspace, 10"
 
         # Навигация между окнами
         "$mainMod, LEFT, movefocus, l"
@@ -85,12 +172,6 @@ in
         "$mainMod SHIFT, UP, movewindow, u"
         "$mainMod SHIFT, DOWN, movewindow, d"
 
-        # Размер окна
-        "binde, $mainMod, H, resizeactive, -40 0"
-        "binde, $mainMod, L, resizeactive, 40 0"
-        "binde, $mainMod, K, resizeactive, 0 -40"
-        "binde, $mainMod, J, resizeactive, 0 40"
-
         # Окна
         "$mainMod, C, killactive"
         "$mainMod, F, fullscreen, 0"
@@ -99,37 +180,24 @@ in
         "$mainMod SHIFT, P, pin, active"
         "$mainMod, G, togglegroup"
         "$mainMod SHIFT, G, changegroupactive"
-        "$mainMod, TAB, cyclenext, prev"
+"$mainMod, TAB, cyclenext, prev"
 
-        # Завершение сессии
-        "$mainMod, M, exit"
-
-        # Caelestia shell (IPC)
-        "$mainMod, SPACE, exec, caelestia shell drawers toggle launcher"
-        "$mainMod, ESCAPE, exec, caelestia shell drawers toggle session"
-        "$mainMod, A, exec, caelestia shell drawers toggle sidebar"
-        "$mainMod, D, exec, caelestia shell drawers toggle dashboard"
-        "$mainMod, U, exec, caelestia shell drawers toggle utilities"
-        "$mainMod, N, exec, caelestia shell nexus open"
-        "$mainMod, L, exec, loginctl lock-session"
-        "$mainMod SHIFT, Q, exec, caelestia shell --kill"
-        "CTRL SUPER SHIFT, R, exec, caelestia shell --restart"
-
-        # Скриншоты
-        ", PRINT, exec, caelestia screenshot"
-        "$mainMod, PRINT, exec, caelestia screenshot -r slurp"
-        "$mainMod SHIFT, PRINT, exec, caelestia screenshot -r slurp --freeze"
-
-        # Буфер обмена и emoji
-        "$mainMod, V, exec, caelestia clipboard"
-        "$mainMod SHIFT, V, exec, caelestia emoji -p"
-
-        # Запись экрана
-        "CTRL SUPER, R, exec, caelestia record"
-        "CTRL SUPER SHIFT, R, exec, caelestia record --region slurp"
+        # Скретч-пад и листание рабочих столов (из старого конфига)
+        "$mainMod, S, togglespecialworkspace, magic"
+        "$mainMod SHIFT, S, movetoworkspace, special:magic"
+        "$mainMod, mouse_down, workspace, e+1"
+        "$mainMod, mouse_up, workspace, e-1"
 
         # Справка по горячим клавишам
-        "$mainMod SHIFT, H, exec, kitty --class keyhints --title=Keybinds -e less -R $HOME/.config/caelestia/keyhints.txt"
+        "$mainMod SHIFT, H, exec, kitty --class keyhints --title=Keybinds -e less -R ${config.home.homeDirectory}/.config/caelestia/keyhints.txt"
+      ];
+
+      # Повторяемые бинды: удержание клавиши меняет размер окна
+      binde = [
+        "$mainMod, H, resizeactive, -40 0"
+        "$mainMod, L, resizeactive, 40 0"
+        "$mainMod, K, resizeactive, 0 -40"
+        "$mainMod, J, resizeactive, 0 40"
       ];
 
       bindm = [
@@ -141,6 +209,7 @@ in
         "float, class:^(keyhints)$"
         "size 900 650, class:^(keyhints)$"
         "center, class:^(keyhints)$"
+        "suppressevent maximize, class:^(.*)$"
       ];
 
       # Мультимедиа (работают всегда, даже при зажатых модификаторах)

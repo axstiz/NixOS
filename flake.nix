@@ -30,6 +30,7 @@
         {
           home-manager.useGlobalPkgs = true;
           home-manager.useUserPackages = true;
+          home-manager.backupFileExtension = "hm-bak";
           home-manager.extraSpecialArgs = { inherit inputs; };
           home-manager.sharedModules = [ inputs.caelestia-shell.homeManagerModules.default ];
           home-manager.users.litsummer = import ./home.nix;
