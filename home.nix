@@ -196,7 +196,7 @@ in
       bind = [
         "$mainMod, Return, exec, kitty"
         "$mainMod, F, exec, firefox"
-        "$mainMod, E, exec, code"
+        "$mainMod, E, exec, nautilus"
 
         "$mainMod, D, exec, serpantinum msg toggle launcher"
         "$mainMod, H, exec, serpantinum msg toggle guide"

@@ -1,0 +1,8 @@
+[Desktop Entry]
+Type=Application
+Name=TG WS Proxy
+Comment=Local MTProto proxy over WebSocket for Telegram
+Exec=tg-ws-proxy
+Icon=tg-ws-proxy
+Terminal=false
+Categories=Network;Utility;

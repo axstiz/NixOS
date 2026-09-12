@@ -1,5 +1,29 @@
 { config, pkgs, inputs, ... }:
 
+let
+  # TG WS Proxy — PyInstaller-бинарь (локальный MTProto-прокси над WebSocket для Telegram
+  # Desktop). В nixpkgs отсутствует, ставим официальный релизный бэкенд. Бинарнику нужны
+  # системные libc/libz — autoPatchelfHook подменяет интерпретатор и добавляет rpath.
+  # Иконку стягиваем из исходников для рабочего .desktop и лаунчера Serpantinum.
+  tgWsProxy = pkgs.stdenv.mkDerivation {
+    pname = "tg-ws-proxy";
+    version = "1.10.2";
+    src = pkgs.fetchurl {
+      url = "https://github.com/Flowseal/tg-ws-proxy/releases/download/v1.10.2/TgWsProxy_linux_amd64";
+      hash = "sha256-VNB93hHbe0YLph4UHbwwT6an4Dc/s+1W5bE987HQpq0=";
+    };
+    dontUnpack = true;
+    nativeBuildInputs = [ pkgs.autoPatchelfHook ];
+    installPhase = ''
+      runHook preInstall
+      install -Dm755 $src $out/bin/tg-ws-proxy
+      install -Dm644 ${./bin/tg-ws-proxy.png} $out/share/pixmaps/tg-ws-proxy.png
+      install -Dm644 ${./bin/tg-ws-proxy.desktop} $out/share/applications/tg-ws-proxy.desktop
+      runHook postInstall
+    '';
+  };
+in
+
 {
   imports = [ ./hardware-configuration.nix ];
 
@@ -64,6 +88,11 @@
     firefox git vscode kitty vim wget
     pywal imagemagick dart-sass
     wl-clipboard cliphist
+    obsidian
+    nautilus
+    yandex-music
+    tgWsProxy
+    telegram-desktop
 
     # opencode — ставится один раз и лежит в профиле, не качается при запуске
     inputs.opencode-nix.packages.${pkgs.system}.default
@@ -73,10 +102,15 @@
 
     # Инструменты для биндов и скриншотов
     grim slurp swappy fuzzel playerctl brightnessctl hyprpicker wireplumber
+    # Зависимости screenshot.sh (grim satty wl-copy pactl quickshell zbarimg python3 + видео)
+    satty wf-recorder gpu-screen-recorder zbar python3 pulseaudioFull quickshell
   ];
 
   # --- СЕРВИСЫ И ЭКСПЕРИМЕНТЫ ---
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
+
+  # Батарея: Serpantinum читает состояние через D-Bus сервис upower
+  services.upower.enable = true;
 
   system.stateVersion = "24.11";
 }
