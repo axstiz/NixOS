@@ -148,6 +148,11 @@ in
         kb_layout = "us,ru";
         kb_options = "grp:alt_shift_toggle";
         follow_mouse = 1;
+        touchpad = {
+          # Направление скролла у тачпада (Hyprland управляет libinput сам,
+          # NixOS-сервис libinput влияет только на X11).
+          natural_scroll = true;
+        };
       };
 
       # Запуск ПО
