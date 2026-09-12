@@ -52,11 +52,18 @@
   };
   nixpkgs.config.allowUnfree = true;
 
+  # --- Serpantinum shell (системные зависимости) ---
+  # Включает NetworkManager/Bluetooth/i2c, power-profiles-daemon, rtkit,
+  # pipewire (уже есть - mkDefault), шрифт Iosevka.
+  programs.serpantinum = {
+    enable = true;
+  };
+
   # --- ПАКЕТЫ ---
   environment.systemPackages = with pkgs; [
     firefox git vscode kitty vim wget
     pywal imagemagick dart-sass
-    hyprshot wl-clipboard cliphist awww
+    wl-clipboard cliphist
 
     # opencode — ставится один раз и лежит в профиле, не качается при запуске
     inputs.opencode-nix.packages.${pkgs.system}.default
@@ -64,7 +71,7 @@
     # CLI GitHub
     gh
 
-    # Инструменты для биндов и Caelestia CLI
+    # Инструменты для биндов и скриншотов
     grim slurp swappy fuzzel playerctl brightnessctl hyprpicker wireplumber
   ];
 

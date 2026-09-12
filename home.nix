@@ -1,8 +1,8 @@
 { config, pkgs, inputs, ... }:
 
 let
-  ws = n: "$mainMod, ${n}, workspace, ${n}";
-  wsMove = n: "$mainMod SHIFT, ${n}, movetoworkspace, ${n}";
+  serpWs = n: k: "$mainMod, ${k}, exec, serpantinum msg workspace ${n}";
+  serpWsMove = n: k: "$mainMod SHIFT, ${k}, exec, serpantinum msg workspace ${n} move";
 in
 {
   home.username = "litsummer";
@@ -11,36 +11,41 @@ in
 
   home.packages = [ ];
 
-  # Обои (awww читает картинку из ~/.config/awww)
-  home.file.".config/awww/wallpaper.png".source = ./my_wallpaper.png;
+  # Обои — каталог, из которого Serpantinum читает картинки (matugen берёт оттуда цвета)
+  home.file."Pictures/Wallpapers/wallpaper.png".source = ./my_wallpaper.png;
 
-  # Шпаргалка горячих клавиш (MOD+Shift+H)
-  home.file.".config/caelestia/keyhints.txt".source = ./keyhints.txt;
-
-  # Правила окон Hyprland (блок-синтаксис 0.54; подключаются через source в settings)
-  home.file.".config/hypr/windowrules.conf".text = ''
-    windowrule {
-        name = keyhints
-        match:class = ^(keyhints)$
-        float = yes
-        size = 900 650
-        center = yes
-    }
-
-    windowrule {
-        name = suppressevent-maximize
-        match:class = ^(.*)$
-        suppress_event = maximize
-    }
-  '';
-
-  # --- Caelestia shell (панель, лаунчер, шторки, экран блокировки) ---
-  programs.caelestia = {
+  # --- Serpantinum shell (панель, лаунчер, шторки, lock-screen) ---
+  programs.serpantinum = {
     enable = true;
-    # Шелл стартуем через exec-once в Hyprland (см. ниже), как в личном конфиге —
-    # под GDM без UWSM systemd-сервис graphical-session.target не запускается.
+    # Стартуем через exec-once в Hyprland (см. ниже) — под GDM graphical-session.target
+    # неактивен, поэтому systemd-сервис не поднимется.
     systemd.enable = false;
-    cli.enable = true;
+    settings = {
+      wallpaperDir = "/home/litsummer/Pictures/Wallpapers";
+
+      theme = {
+        activePreset = "Matugen";
+        matugen = true;
+        fontFamily = "Adwaita Mono";
+        borderRadius = 12;
+      };
+
+      notifications.dnd = false;
+
+      # Все виджеты панели: left, workspaces, focus, timedate, info, weather,
+      # media, vis (аудио-визуализатор), tray и системная группа sysmon/kb/wifi/bt/vol/bat.
+      # Каждый виджет сам открывает свою панель при клике (vol->громкость, bat->система и т.д.)
+      bar = {
+        position = "top";
+        style = "fill";
+        workspaceCount = 10;
+        modules = {
+          left = [ "left" "workspaces" "focus" ];
+          center = [ [ "timedate" "info" "weather" ] ];
+          right = [ "media" "vis" "tray" [ "sysmon" "kb" "wifi" "bt" "vol" "bat" ] ];
+        };
+      };
+    };
   };
 
   # --- Hyprland ---
@@ -52,8 +57,9 @@ in
       "$mainMod" = "SUPER";
 
       exec-once = [
-        "caelestia-shell"
-        "awww img ${config.home.homeDirectory}/.config/awww/wallpaper.png"
+        "serpantinumd start"
+        "wl-paste --type text --watch cliphist store"
+        "wl-paste --type image --watch cliphist store"
       ];
 
       env = [
@@ -155,71 +161,76 @@ in
         };
       };
 
-      # Запуск ПО
+      # --- Запуск и панели Serpantinum (штатная раскладка) ---
       bind = [
-        "$mainMod, Q, exec, kitty"
-        "$mainMod, R, exec, firefox"
+        "$mainMod, Return, exec, kitty"
+        "$mainMod, F, exec, firefox"
         "$mainMod, E, exec, code"
-        "$mainMod, W, exec, kitty"
 
-        # Рабочие столы 1-10
-        (ws "1")
-        (ws "2")
-        (ws "3")
-        (ws "4")
-        (ws "5")
-        (ws "6")
-        (ws "7")
-        (ws "8")
-        (ws "9")
-        "$mainMod, 0, workspace, 10"
-        (wsMove "1")
-        (wsMove "2")
-        (wsMove "3")
-        (wsMove "4")
-        (wsMove "5")
-        (wsMove "6")
-        (wsMove "7")
-        (wsMove "8")
-        (wsMove "9")
-        "$mainMod SHIFT, 0, movetoworkspace, 10"
+        "$mainMod, D, exec, serpantinum msg toggle launcher"
+        "$mainMod, H, exec, serpantinum msg toggle guide"
+        "$mainMod, W, exec, serpantinum msg toggle wallpaper"
+        "$mainMod, C, exec, serpantinum msg toggle clipboard"
+        "$mainMod, N, exec, serpantinum msg toggle network"
+        "$mainMod, B, exec, serpantinum msg toggle system"
+        "$mainMod, M, exec, serpantinum msg toggle music"
+        "$mainMod, V, exec, serpantinum msg toggle volume"
+        "$mainMod, S, exec, serpantinum msg toggle calendar"
+        "$mainMod, A, exec, serpantinum msg toggle autohide"
+        "$mainMod, L, exec, serpantinum lock"
+        "$mainMod, R, exec, serpantinum reload"
+        "$mainMod, SPACE, exec, playerctl play-pause"
 
-        # Навигация между окнами
+        # Рабочие столы 1-10 (переключение через шелл)
+        (serpWs "1" "1")
+        (serpWs "2" "2")
+        (serpWs "3" "3")
+        (serpWs "4" "4")
+        (serpWs "5" "5")
+        (serpWs "6" "6")
+        (serpWs "7" "7")
+        (serpWs "8" "8")
+        (serpWs "9" "9")
+        (serpWs "10" "0")
+        (serpWsMove "1" "1")
+        (serpWsMove "2" "2")
+        (serpWsMove "3" "3")
+        (serpWsMove "4" "4")
+        (serpWsMove "5" "5")
+        (serpWsMove "6" "6")
+        (serpWsMove "7" "7")
+        (serpWsMove "8" "8")
+        (serpWsMove "9" "9")
+        (serpWsMove "10" "0")
+
+        # Окна
+        "$mainMod, Q, killactive"
+        "$mainMod, G, fullscreen, 0"
+        "$mainMod, T, togglefloating"
+        "$mainMod SHIFT, S, togglespecialworkspace, magic"
+        "$mainMod, TAB, cyclenext, prev"
+
+        # Навигация: фокус по стрелкам, перемещение — MOD+Ctrl, размер — MOD+Shift (см. binde)
         "$mainMod, LEFT, movefocus, l"
         "$mainMod, RIGHT, movefocus, r"
         "$mainMod, UP, movefocus, u"
         "$mainMod, DOWN, movefocus, d"
-        "$mainMod SHIFT, LEFT, movewindow, l"
-        "$mainMod SHIFT, RIGHT, movewindow, r"
-        "$mainMod SHIFT, UP, movewindow, u"
-        "$mainMod SHIFT, DOWN, movewindow, d"
+        "$mainMod CTRL, LEFT, movewindow, l"
+        "$mainMod CTRL, RIGHT, movewindow, r"
+        "$mainMod CTRL, UP, movewindow, u"
+        "$mainMod CTRL, DOWN, movewindow, d"
 
-        # Окна
-        "$mainMod, C, killactive"
-        "$mainMod, F, fullscreen, 0"
-        "$mainMod SHIFT, F, fullscreen, 1"
-        "$mainMod, T, togglefloating"
-        "$mainMod SHIFT, P, pin, active"
-        "$mainMod, G, togglegroup"
-        "$mainMod SHIFT, G, changegroupactive"
-"$mainMod, TAB, cyclenext, prev"
-
-        # Скретч-пад и листание рабочих столов (из старого конфига)
-        "$mainMod, S, togglespecialworkspace, magic"
-        "$mainMod SHIFT, S, movetoworkspace, special:magic"
+        # Листание рабочих столов колесом
         "$mainMod, mouse_down, workspace, e+1"
         "$mainMod, mouse_up, workspace, e-1"
-
-        # Справка по горячим клавишам
-        "$mainMod SHIFT, H, exec, kitty --class keyhints --title=Keybinds -e less -R ${config.home.homeDirectory}/.config/caelestia/keyhints.txt"
       ];
 
-      # Повторяемые бинды: удержание клавиши меняет размер окна
+      # Удержание MOD+Shift+стрелки меняет размер окна (повторяемые)
       binde = [
-        "$mainMod, H, resizeactive, -40 0"
-        "$mainMod, L, resizeactive, 40 0"
-        "$mainMod, K, resizeactive, 0 -40"
-        "$mainMod, J, resizeactive, 0 40"
+        "$mainMod SHIFT, LEFT, resizeactive, -50 0"
+        "$mainMod SHIFT, RIGHT, resizeactive, 50 0"
+        "$mainMod SHIFT, UP, resizeactive, 0 -50"
+        "$mainMod SHIFT, DOWN, resizeactive, 0 50"
       ];
 
       bindm = [
@@ -227,21 +238,24 @@ in
         "$mainMod, mouse:273, resizewindow"
       ];
 
-      # Правила окон — в отдельном файле (Hyprland 0.54: новый блок-синтаксис)
-      source = [ "/home/litsummer/.config/hypr/windowrules.conf" ];
-
-      # Мультимедиа (работают всегда, даже при зажатых модификаторах)
+      # Аппаратные клавиши и скриншоты (работают всегда, даже при зажатых модификаторах)
       bindl = [
-        ", XF86AudioMute, exec, wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle"
-        ", XF86AudioMicMute, exec, wpctl set-mute @DEFAULT_AUDIO_SOURCE@ toggle"
-        ", XF86AudioRaiseVolume, exec, wpctl set-mute @DEFAULT_AUDIO_SINK@ 0; wpctl set-volume -l 1.0 @DEFAULT_AUDIO_SINK@ 5%+"
-        ", XF86AudioLowerVolume, exec, wpctl set-mute @DEFAULT_AUDIO_SINK@ 0; wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-"
-        ", XF86MonBrightnessUp, exec, brightnessctl -q set 5%+"
-        ", XF86MonBrightnessDown, exec, brightnessctl -q set 5%-"
+        ", XF86AudioMute, exec, serpantinum volume mute-toggle"
+        ", XF86AudioMicMute, exec, serpantinum volume mic-toggle"
+        ", XF86AudioRaiseVolume, exec, serpantinum volume raise"
+        ", XF86AudioLowerVolume, exec, serpantinum volume lower"
+        ", XF86MonBrightnessUp, exec, serpantinum brightness raise"
+        ", XF86MonBrightnessDown, exec, serpantinum brightness lower"
         ", XF86AudioNext, exec, playerctl next"
         ", XF86AudioPrev, exec, playerctl previous"
         ", XF86AudioPlay, exec, playerctl play-pause"
         ", XF86AudioStop, exec, playerctl stop"
+        ", XF86PowerOff, exec, serpantinum lock"
+
+        ", Print, exec, serpantinum screenshot"
+        ", SHIFT, Print, exec, serpantinum screenshot --edit"
+        ", SUPER, Print, exec, serpantinum screenshot --full"
+        ", SUPER, SHIFT, Print, exec, serpantinum screenshot --full --edit"
       ];
     };
   };
