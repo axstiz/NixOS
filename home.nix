@@ -11,6 +11,9 @@ in
 
   home.packages = [ ];
 
+  # Обои (awww читает картинку из ~/.config/awww)
+  home.file.".config/awww/wallpaper.png".source = ./my_wallpaper.png;
+
   # --- Caelestia shell (панель, лаунчер, шторки, экран блокировки) ---
   programs.caelestia = {
     enable = true;
@@ -25,6 +28,10 @@ in
 
     settings = {
       "$mainMod" = "SUPER";
+
+      exec-once = [
+        "awww img $HOME/.config/awww/wallpaper.png"
+      ];
 
       misc = {
         disable_hyprland_logo = true;
