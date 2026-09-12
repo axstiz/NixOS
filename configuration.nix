@@ -16,7 +16,7 @@
 
   services.libinput = {
     enable = true;
-    touchpad.naturalScrolling = false;
+    touchpad.naturalScrolling = true;
   };
 
   services.pipewire = {
