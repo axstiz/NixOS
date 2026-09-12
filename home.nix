@@ -205,7 +205,8 @@ in
         "$mainMod, mouse:273, resizewindow"
       ];
 
-      windowrule = [
+      # Правила окон (Hyprland 0.54: legacy-синтаксис — windowrulev2)
+      windowrulev2 = [
         "float, class:^(keyhints)$"
         "size 900 650, class:^(keyhints)$"
         "center, class:^(keyhints)$"
