@@ -17,6 +17,23 @@ in
   # Шпаргалка горячих клавиш (MOD+Shift+H)
   home.file.".config/caelestia/keyhints.txt".source = ./keyhints.txt;
 
+  # Правила окон Hyprland (блок-синтаксис 0.54; подключаются через source в settings)
+  home.file.".config/hypr/windowrules.conf".text = ''
+    windowrule {
+        name = keyhints
+        match:class = ^(keyhints)$
+        float = yes
+        size = 900 650
+        center = yes
+    }
+
+    windowrule {
+        name = suppressevent-maximize
+        match:class = ^(.*)$
+        suppress_event = maximize
+    }
+  '';
+
   # --- Caelestia shell (панель, лаунчер, шторки, экран блокировки) ---
   programs.caelestia = {
     enable = true;
@@ -205,13 +222,8 @@ in
         "$mainMod, mouse:273, resizewindow"
       ];
 
-      # Правила окон (Hyprland 0.54: legacy-синтаксис — windowrulev2)
-      windowrulev2 = [
-        "float, class:^(keyhints)$"
-        "size 900 650, class:^(keyhints)$"
-        "center, class:^(keyhints)$"
-        "suppressevent maximize, class:^(.*)$"
-      ];
+      # Правила окон — в отдельном файле (Hyprland 0.54: новый блок-синтаксис)
+      source = [ "/home/litsummer/.config/hypr/windowrules.conf" ];
 
       # Мультимедиа (работают всегда, даже при зажатых модификаторах)
       bindl = [
