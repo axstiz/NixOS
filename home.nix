@@ -14,6 +14,13 @@ in
   # Обои — каталог, из которого Serpantinum читает картинки (matugen берёт оттуда цвета)
   home.file."Pictures/Wallpapers/wallpaper.png".source = ./my_wallpaper.png;
 
+  # Применяет дефолтные обои при первом логине (см. exec-once ниже);
+  # ручной выбор обоев пикером сохраняется и не перезаписывается.
+  home.file."bin/apply-wallpaper.sh" = {
+    source = ./bin/apply-wallpaper.sh;
+    executable = true;
+  };
+
   # --- Serpantinum shell (панель, лаунчер, шторки, lock-screen) ---
   programs.serpantinum = {
     enable = true;
@@ -58,6 +65,7 @@ in
 
       exec-once = [
         "serpantinumd start"
+        "$HOME/bin/apply-wallpaper.sh"
         "wl-paste --type text --watch cliphist store"
         "wl-paste --type image --watch cliphist store"
       ];
