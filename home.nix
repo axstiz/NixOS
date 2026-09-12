@@ -14,6 +14,9 @@ in
   # Обои (awww читает картинку из ~/.config/awww)
   home.file.".config/awww/wallpaper.png".source = ./my_wallpaper.png;
 
+  # Шпаргалка горячих клавиш (MOD+Shift+H)
+  home.file.".config/caelestia/keyhints.txt".source = ./keyhints.txt;
+
   # --- Caelestia shell (панель, лаунчер, шторки, экран блокировки) ---
   programs.caelestia = {
     enable = true;
@@ -124,11 +127,20 @@ in
         # Запись экрана
         "CTRL SUPER, R, exec, caelestia record"
         "CTRL SUPER SHIFT, R, exec, caelestia record --region slurp"
+
+        # Справка по горячим клавишам
+        "$mainMod SHIFT, H, exec, kitty --class keyhints --title=Keybinds -e less -R $HOME/.config/caelestia/keyhints.txt"
       ];
 
       bindm = [
         "$mainMod, mouse:272, movewindow"
         "$mainMod, mouse:273, resizewindow"
+      ];
+
+      windowrule = [
+        "float, class:^(keyhints)$"
+        "size 900 650, class:^(keyhints)$"
+        "center, class:^(keyhints)$"
       ];
 
       # Мультимедиа (работают всегда, даже при зажатых модификаторах)
