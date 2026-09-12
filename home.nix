@@ -3,6 +3,15 @@
 let
   serpWs = n: k: "$mainMod, ${k}, exec, serpantinum msg workspace ${n}";
   serpWsMove = n: k: "$mainMod SHIFT, ${k}, exec, serpantinum msg workspace ${n} move";
+
+  # Каталог обоев: наша дефолтная картинка + коллекция автора шелла (shell-wallpapers).
+  # ~/Pictures/Wallpapers — симлинк на этот store-путь; Serpantinum/matugen читают его
+  # напрямую, отдельные файлы в профиль не копируются.
+  wallpapers = pkgs.runCommand "serpantinum-wallpapers" { } ''
+    mkdir -p "$out"
+    cp ${./my_wallpaper.png} "$out/wallpaper.png"
+    cp -a ${inputs.shell-wallpapers}/images/. "$out/"
+  '';
 in
 {
   home.username = "litsummer";
@@ -12,12 +21,23 @@ in
   home.packages = [ ];
 
   # Обои — каталог, из которого Serpantinum читает картинки (matugen берёт оттуда цвета)
-  home.file."Pictures/Wallpapers/wallpaper.png".source = ./my_wallpaper.png;
+  home.file."Pictures/Wallpapers" = {
+    source = wallpapers;
+    recursive = false;
+  };
 
   # Применяет дефолтные обои при первом логине (см. exec-once ниже);
   # ручной выбор обоев пикером сохраняется и не перезаписывается.
   home.file."bin/apply-wallpaper.sh" = {
     source = ./bin/apply-wallpaper.sh;
+    executable = true;
+  };
+
+  # Добавляет на рабочий стол виджет-визуализатор звука (тип "bars"), если его
+  # ещё нет в разметке виджетов (см. exec-once ниже). Положение/размер можно
+  # поменять в Guide -> Display -> Widgets; ручной ре-плейсмент не трогается.
+  home.file."bin/ensure-visualizer.sh" = {
+    source = ./bin/ensure-visualizer.sh;
     executable = true;
   };
 
@@ -66,6 +86,7 @@ in
       exec-once = [
         "serpantinumd start"
         "$HOME/bin/apply-wallpaper.sh"
+        "$HOME/bin/ensure-visualizer.sh"
         "wl-paste --type text --watch cliphist store"
         "wl-paste --type image --watch cliphist store"
       ];

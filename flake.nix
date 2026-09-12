@@ -10,6 +10,14 @@
       url = "git+https://github.com/ilyamiro/serpantinum?shallow=1";
     };
 
+    # Коллекция обоев автора шелла — распаковывается в ~/Pictures/Wallpapers,
+    # откуда Serpantinum читает картинки для пикера и matugen.
+    shell-wallpapers = {
+      url = "git+https://github.com/ilyamiro/shell-wallpapers?shallow=1";
+      # Просто репозиторий с обоями, flake.nix у него нет.
+      flake = false;
+    };
+
     home-manager = {
       url = "github:nix-community/home-manager/release-26.05";
       inputs.nixpkgs.follows = "nixpkgs";
