@@ -1,8 +1,10 @@
 { config, pkgs, inputs, ... }:
 
 let
-  serpWs = n: k: "$mainMod, ${k}, exec, serpantinum msg workspace ${n}";
-  serpWsMove = n: k: "$mainMod SHIFT, ${k}, exec, serpantinum msg workspace ${n} move";
+  # Нативные диспатчеры Hyprland: serpantinum msg workspace использует hl.dsp.*,
+  # которых нет в Hyprland 0.54 (см. qs_manager.sh) — переключаемся напрямую.
+  serpWs = n: k: "$mainMod, ${k}, workspace, ${n}";
+  serpWsMove = n: k: "$mainMod SHIFT, ${k}, movetoworkspace, ${n}";
 
   # Каталог обоев: наша дефолтная картинка + коллекция автора шелла (shell-wallpapers).
   # ~/Pictures/Wallpapers — симлинк на этот store-путь; Serpantinum/matugen читают его
