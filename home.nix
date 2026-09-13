@@ -84,6 +84,50 @@ in
     };
   };
 
+  # --- Kitty: чёрный фон, белый текст, сиреневый акцент ---
+  programs.kitty = {
+    enable = true;
+    settings = {
+      copy_on_select = "clipboard";
+      background = "#000000";
+      foreground = "#ffffff";
+      cursor = "#c4a7e7";
+      cursor_text_color = "#000000";
+      selection_background = "#c4a7e7";
+      selection_foreground = "#000000";
+      url_color = "#ffcfa8";
+      active_border_color = "#c4a7e7";
+      inactive_border_color = "#262626";
+      active_tab_background = "#c4a7e7";
+      active_tab_foreground = "#000000";
+      inactive_tab_background = "#0f0f0f";
+      inactive_tab_foreground = "#9a9a9a";
+      tab_bar_background = "#050505";
+      bell_border_color = "#c4a7e7";
+      color0 = "#101010";
+      color1 = "#ff6b6b";
+      color2 = "#7ee787";
+      color3 = "#ffcf6b";
+      color4 = "#6bb3ff";
+      color5 = "#c4a7e7";
+      color6 = "#6be5ff";
+      color7 = "#d0d0d0";
+      color8 = "#505050";
+      color9 = "#ff9999";
+      color10 = "#a7f0b0";
+      color11 = "#ffe0a0";
+      color12 = "#9bcbff";
+      color13 = "#e0d0ff";
+      color14 = "#a0f0ff";
+      color15 = "#ffffff";
+    };
+    keybindings = {
+      "ctrl+c" = "copy_or_interrupt";
+      "ctrl+v" = "paste_from_clipboard";
+      "ctrl+x" = "copy_and_clear_or_interrupt";
+    };
+  };
+
   # --- Hyprland ---
   wayland.windowManager.hyprland = {
     enable = true;
