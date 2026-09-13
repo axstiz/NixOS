@@ -86,7 +86,7 @@ in
   users.users.litsummer = {
     isNormalUser = true;
     description = "Матвей Вахрушев";
-    extraGroups = [ "networkmanager" "wheel" "video" ];
+    extraGroups = [ "networkmanager" "wheel" "video" "docker" ];
   };
 
   # --- ПРОГРАММЫ ---
@@ -126,6 +126,10 @@ in
     grim slurp swappy fuzzel playerctl brightnessctl hyprpicker wireplumber
     # Зависимости screenshot.sh (grim satty wl-copy pactl quickshell zbarimg python3 + видео)
     satty wf-recorder gpu-screen-recorder zbar python3 pulseaudioFull quickshell
+    # Dev: Java 21 (учебные проекты), Docker CLI/Compose (CLI добавляет virtualisation.docker)
+    jdk21
+    docker-compose
+    lazydocker
   ];
 
   # --- СЕРВИСЫ И ЭКСПЕРИМЕНТЫ ---
@@ -133,6 +137,9 @@ in
 
   # Батарея: Serpantinum читает состояние через D-Bus сервис upower
   services.upower.enable = true;
+
+  # --- Docker ---
+  virtualisation.docker.enable = true;
 
   system.stateVersion = "24.11";
 }
