@@ -22,6 +22,13 @@ in
 
   home.packages = [ ];
 
+  # Курсор для GTK-приложений (Nautilus, Telegram и т.д.) — бледно-сиреневый Rose Pine.
+  home.pointerCursor = {
+    name = "BreezeX-RosePine-Linux";
+    package = pkgs.rose-pine-cursor;
+    size = 24;
+  };
+
   # Обои — каталог, из которого Serpantinum читает картинки (matugen берёт оттуда цвета)
   home.file."Pictures/Wallpapers" = {
     source = wallpapers;
@@ -96,6 +103,8 @@ in
       env = [
         "XCURSOR_SIZE,24"
         "HYPRCURSOR_SIZE,24"
+        "XCURSOR_THEME,BreezeX-RosePine-Linux"
+        "HYPRCURSOR_THEME,rose-pine-hyprcursor"
       ];
 
       monitor = [
@@ -109,8 +118,8 @@ in
         resize_on_border = false;
         allow_tearing = false;
         layout = "dwindle";
-        "col.active_border" = "rgba(33ccffee) rgba(00ff99ee) 45deg";
-        "col.inactive_border" = "rgba(595959aa)";
+        "col.active_border" = "rgba(c4a7e7ee) rgba(e0def4ee) 45deg";
+        "col.inactive_border" = "rgba(6e6a86aa)";
       };
 
       decoration = {
