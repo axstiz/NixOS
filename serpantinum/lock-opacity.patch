@@ -1,9 +1,125 @@
---- a/quickshell/lock/Lock.qml
-+++ b/quickshell/lock/Lock.qml
-@@ -1434,5 +1434,5 @@
+--- a/quickshell/lock/Lock.qml	2026-09-14 13:07:05.008419185 +0500
++++ b/quickshell/lock/Lock.qml	2026-09-14 13:17:21.541724303 +0500
+@@ -1150,7 +1150,7 @@
+                                 width: Math.min(parent.width - screenRoot.s(48), screenRoot.s(440) + (screenRoot.wingsReveal * screenRoot.s(780)))
+                                 height: screenRoot.s(540)
+                                 radius: ThemeBackend.borderRadius * 1.5
+-                                color: ThemeBackend.surface0
++                                color: Qt.alpha(ThemeBackend.surface0, 0.50)
+                                 border.width: 1.5
+                                 border.color: ThemeBackend.surface1
+                                 clip: true
+@@ -1242,7 +1242,7 @@
+                                                 iconFontSize: screenRoot.s(15)
+                                                 buttonText: screenRoot.currentUser + " • " + lockUI.statusText
+                                                 textFontSize: screenRoot.s(13)
+-                                                accentColor: Qt.lighter(ThemeBackend.surface0, 1.28)
++                                                accentColor: Qt.alpha(Qt.lighter(ThemeBackend.surface0, 1.28), 0.70)
+                                                 textColor: lockUI.failed ? ThemeBackend.red : (lockUI.authenticating ? ThemeBackend.peach : ThemeBackend.text)
+                                             }
+ 
+@@ -1252,10 +1252,10 @@
+                                                 Layout.fillWidth: true
+                                                 Layout.preferredHeight: screenRoot.s(44)
+                                                 lockBoxColor: Qt.lighter(ThemeBackend.surface0, 1.55)
+-                                                baseColor: Qt.lighter(ThemeBackend.surface0, 1.28)
+-                                                hoverColor: Qt.lighter(ThemeBackend.surface0, 1.28)
+-                                                focusColor: Qt.lighter(ThemeBackend.surface0, 1.28)
+-                                                activeColor: Qt.lighter(ThemeBackend.surface0, 1.28)
++                                                baseColor: Qt.alpha(Qt.lighter(ThemeBackend.surface0, 1.28), 0.70)
++                                                hoverColor: Qt.alpha(Qt.lighter(ThemeBackend.surface0, 1.28), 0.70)
++                                                focusColor: Qt.alpha(Qt.lighter(ThemeBackend.surface0, 1.28), 0.70)
++                                                activeColor: Qt.alpha(Qt.lighter(ThemeBackend.surface0, 1.28), 0.70)
+                                                 accentColor: ThemeBackend.mauve
+                                                 textColor: ThemeBackend.text
+                                                 subTextColor: ThemeBackend.subtext0
+@@ -1323,7 +1323,7 @@
+                                                     iconFontSize: screenRoot.s(14)
+                                                     buttonText: root.kbLayout
+                                                     textFontSize: screenRoot.s(12)
+-                                                    accentColor: Qt.lighter(ThemeBackend.surface0, 1.28)
++                                                    accentColor: Qt.alpha(Qt.lighter(ThemeBackend.surface0, 1.28), 0.70)
+                                                     textColor: ThemeBackend.text
+                                                     onClicked: root.switchKbLayout()
+                                                 }
+@@ -1338,7 +1338,7 @@
+                                                     iconFontSize: screenRoot.s(14)
+                                                     buttonText: root.batPercent
+                                                     textFontSize: screenRoot.s(12)
+-                                                    accentColor: Qt.lighter(ThemeBackend.surface0, 1.28)
++                                                    accentColor: Qt.alpha(Qt.lighter(ThemeBackend.surface0, 1.28), 0.70)
+                                                     textColor: root.batDynamicColor
+                                                 }
+                                             }
+@@ -1402,7 +1402,7 @@
+                                     cornerRadius: ThemeBackend.borderRadius
+                                     buttonIcon: screenRoot.powerMenuOpen ? "󰅖" : "󰐥"
+                                     iconFontSize: screenRoot.s(20)
+-                                    accentColor: screenRoot.powerMenuOpen ? ThemeBackend.surface2 : Qt.lighter(ThemeBackend.surface0, 1.28)
++                                    accentColor: screenRoot.powerMenuOpen ? ThemeBackend.surface2 : Qt.alpha(Qt.lighter(ThemeBackend.surface0, 1.28), 0.70)
+                                     textColor: screenRoot.powerMenuOpen ? ThemeBackend.text : ThemeBackend.red
+                                     onClicked: screenRoot.powerMenuOpen = !screenRoot.powerMenuOpen
+                                 }
+@@ -1433,7 +1433,7 @@
+                                 visible: height > 0 || opacity > 0
                                  opacity: screenRoot.powerMenuOpen ? 1.0 : 0.0
  
 -                                color: Qt.rgba(ThemeBackend.surface0.r, ThemeBackend.surface0.g, ThemeBackend.surface0.b, 0.45)
-+                                color: Qt.rgba(ThemeBackend.surface0.r, ThemeBackend.surface0.g, ThemeBackend.surface0.b, 0.80)
++                                color: Qt.rgba(ThemeBackend.surface0.r, ThemeBackend.surface0.g, ThemeBackend.surface0.b, 0.70)
                                  border.color: Qt.rgba(ThemeBackend.surface1.r, ThemeBackend.surface1.g, ThemeBackend.surface1.b, 0.4)
                                  border.width: 1
+ 
+@@ -1466,7 +1466,7 @@
+                                         buttonIcon: "󰒲"
+                                         buttonText: I18n.t("lock.power.suspend")
+                                         accentColor: ThemeBackend.mauve
+-                                        baseColor: ThemeBackend.surface0
++                                        baseColor: Qt.alpha(ThemeBackend.surface0, 0.70)
+                                         hoverColor: ThemeBackend.surface1
+                                         fillDuration: 1200
+                                         onTriggered: { screenRoot.powerMenuOpen = false; suspendProcess.running = true; }
+@@ -1477,7 +1477,7 @@
+                                         buttonIcon: "󰑓"
+                                         buttonText: I18n.t("lock.power.reboot")
+                                         accentColor: ThemeBackend.blue
+-                                        baseColor: ThemeBackend.surface0
++                                        baseColor: Qt.alpha(ThemeBackend.surface0, 0.70)
+                                         hoverColor: ThemeBackend.surface1
+                                         fillDuration: 1200
+                                         onTriggered: { screenRoot.powerMenuOpen = false; reloadProcess.running = true; }
+@@ -1488,7 +1488,7 @@
+                                         buttonIcon: "󰐥"
+                                         buttonText: I18n.t("lock.power.power_off")
+                                         accentColor: ThemeBackend.red
+-                                        baseColor: ThemeBackend.surface0
++                                        baseColor: Qt.alpha(ThemeBackend.surface0, 0.70)
+                                         hoverColor: ThemeBackend.surface1
+                                         fillDuration: 1200
+                                         onTriggered: { screenRoot.powerMenuOpen = false; poweroffProcess.running = true; }
+@@ -1526,7 +1526,7 @@
+                                 Rectangle {
+                                     anchors.fill: parent
+                                     radius: screenRoot.s(16)
+-                                    color: Qt.lighter(ThemeBackend.surface0, 1.28)
++                                    color: Qt.alpha(Qt.lighter(ThemeBackend.surface0, 1.28), 0.70)
+                                     border.width: 1
+                                     border.color: Qt.rgba(ThemeBackend.text.r, ThemeBackend.text.g, ThemeBackend.text.b, 0.06)
+                                 }
+@@ -1874,7 +1874,7 @@
+                                 Layout.fillHeight: true
+                                 hasShadow: true
+                                 shadowColor: Qt.rgba(0, 0, 0, 0.22)
+-                                baseColor: Qt.lighter(ThemeBackend.surface0, 1.28)
++                                baseColor: Qt.alpha(Qt.lighter(ThemeBackend.surface0, 1.28), 0.70)
+                                 borderWidth: 1
+                                 borderColor: Qt.rgba(ThemeBackend.text.r, ThemeBackend.text.g, ThemeBackend.text.b, 0.06)
+                                 cornerRadius: screenRoot.s(16)
+@@ -1900,7 +1900,7 @@
+                                     id: mediaBoxBg
+                                     anchors.fill: parent
+                                     radius: screenRoot.s(16)
+-                                    color: Qt.lighter(ThemeBackend.surface0, 1.28)
++                                    color: Qt.alpha(Qt.lighter(ThemeBackend.surface0, 1.28), 0.70)
+                                     border.width: 1
+                                     border.color: Qt.rgba(ThemeBackend.text.r, ThemeBackend.text.g, ThemeBackend.text.b, 0.06)
+ 
