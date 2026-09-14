@@ -137,6 +137,15 @@ in
     lazydocker
   ];
 
+  # --- Прокси-клиент Throne (Qt GUI + встроенный core, без ручной докачки) ---
+  programs.throne = {
+    enable = true;
+    tunMode = {
+      enable = true;
+      setuid = true;
+    };
+  };
+
   # --- СЕРВИСЫ И ЭКСПЕРИМЕНТЫ ---
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
 
