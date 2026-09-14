@@ -1,0 +1,7 @@
+--- a/quickshell/quickactions/actions/DrawAction.qml
++++ b/quickshell/quickactions/actions/DrawAction.qml
+@@ -66,3 +66,3 @@
+     property color baseTextColor: ThemeBackend.text
+-    property color solidBgColor: ThemeBackend.mantle
++    property color solidBgColor: Qt.rgba(ThemeBackend.mantle.r, ThemeBackend.mantle.g, ThemeBackend.mantle.b, 0.80)
+     property color themeBaseColor: ThemeBackend.base

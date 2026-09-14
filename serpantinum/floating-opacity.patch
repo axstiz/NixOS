@@ -1,0 +1,29 @@
+--- a/quickshell/quickactions/Floating.qml	2026-09-14 11:48:01.234331825 +0500
++++ b/quickshell/quickactions/Floating.qml	2026-09-14 11:48:07.872027695 +0500
+@@ -1077,7 +1077,7 @@
+                         height: floatingWidget.outerCornerRadius
+                         preferredRendererType: Shape.CurveRenderer
+                         ShapePath {
+-                            fillColor: Qt.rgba(ThemeBackend.base.r, ThemeBackend.base.g, ThemeBackend.base.b, 0.95)
++                            fillColor: Qt.rgba(ThemeBackend.base.r, ThemeBackend.base.g, ThemeBackend.base.b, 0.80)
+                             strokeColor: "transparent"
+                             startX: 0
+                             startY: 0
+@@ -1101,7 +1101,7 @@
+                         height: floatingWidget.outerCornerRadius
+                         preferredRendererType: Shape.CurveRenderer
+                         ShapePath {
+-                            fillColor: Qt.rgba(ThemeBackend.base.r, ThemeBackend.base.g, ThemeBackend.base.b, 0.95)
++                            fillColor: Qt.rgba(ThemeBackend.base.r, ThemeBackend.base.g, ThemeBackend.base.b, 0.80)
+                             strokeColor: "transparent"
+                             startX: 0
+                             startY: floatingWidget.outerCornerRadius
+@@ -1128,7 +1128,7 @@
+                         bottomLeftRadius: 0
+                         topRightRadius: floatingWidget.containerRadius
+                         bottomRightRadius: floatingWidget.containerRadius
+-                        color: Qt.rgba(ThemeBackend.base.r, ThemeBackend.base.g, ThemeBackend.base.b, 0.95)
++                        color: Qt.rgba(ThemeBackend.base.r, ThemeBackend.base.g, ThemeBackend.base.b, 0.80)
+                         border.width: 0
+ 
+                         MouseArea {

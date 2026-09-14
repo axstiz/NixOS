@@ -1,0 +1,9 @@
+--- a/quickshell/lock/Lock.qml
++++ b/quickshell/lock/Lock.qml
+@@ -1434,5 +1434,5 @@
+                                 opacity: screenRoot.powerMenuOpen ? 1.0 : 0.0
+ 
+-                                color: Qt.rgba(ThemeBackend.surface0.r, ThemeBackend.surface0.g, ThemeBackend.surface0.b, 0.45)
++                                color: Qt.rgba(ThemeBackend.surface0.r, ThemeBackend.surface0.g, ThemeBackend.surface0.b, 0.80)
+                                 border.color: Qt.rgba(ThemeBackend.surface1.r, ThemeBackend.surface1.g, ThemeBackend.surface1.b, 0.4)
+                                 border.width: 1

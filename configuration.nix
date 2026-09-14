@@ -108,6 +108,9 @@ in
     firefox git vscode kitty vim wget
     pywal imagemagick dart-sass
     wl-clipboard cliphist
+    xdg-user-dirs
+    # Сервисная панель: быстрая сводка о системе (уже есть как зависимость serpantinum)
+    fastfetch
     obsidian
     nautilus
     yandex-music
@@ -124,6 +127,8 @@ in
 
     # Инструменты для биндов и скриншотов
     grim slurp swappy fuzzel playerctl brightnessctl hyprpicker wireplumber
+    # jq — для подсчёта окон в mayfastfetch.sh и в скриптах serpantinum
+    jq
     # Зависимости screenshot.sh (grim satty wl-copy pactl quickshell zbarimg python3 + видео)
     satty wf-recorder gpu-screen-recorder zbar python3 pulseaudioFull quickshell
     # Dev: Java 21 (учебные проекты), Docker CLI/Compose (CLI добавляет virtualisation.docker)

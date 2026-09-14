@@ -1,0 +1,18 @@
+--- a/quickshell/singletons/theme/ThemeBackend.qml
++++ b/quickshell/singletons/theme/ThemeBackend.qml
+@@ -259,10 +259,15 @@
+             return val.toString();
+         };
+ 
++        let bgAlpha = 0.90;
++        let bgProps = { "base": true, "surface0": true, "surface1": true, "surface2": true };
+         let safeAssign = function(propName, colorVal) {
+             let hexColor = resolveHex(colorVal);
+             if (!hexColor) return;
+             let nextColor = Qt.color(hexColor);
++            if (bgProps[propName] === true && nextColor.a > 0.001) {
++                nextColor = Qt.rgba(nextColor.r, nextColor.g, nextColor.b, nextColor.a * bgAlpha);
++            }
+             if (root[propName].toString() !== nextColor.toString()) {
+                 root[propName] = nextColor;
+             }

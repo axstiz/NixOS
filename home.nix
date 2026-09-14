@@ -35,6 +35,11 @@ in
     recursive = false;
   };
 
+  # Конфиг fastfetch: фиолетовый градиент-логотип NixOS + нагрузка (cpu/ram) в каждом терминале.
+  home.file.".config/fastfetch/config.jsonc" = {
+    source = ./fastfetch/config.jsonc;
+  };
+
   # Применяет дефолтные обои при первом логине (см. exec-once ниже);
   # ручной выбор обоев пикером сохраняется и не перезаписывается.
   home.file."bin/apply-wallpaper.sh" = {
@@ -53,6 +58,31 @@ in
   # --- Serpantinum shell (панель, лаунчер, шторки, lock-screen) ---
   programs.serpantinum = {
     enable = true;
+    # Скрипт снимка экрана serpantinum модифицирован нашим вариантом (serpantinum/screenshot.sh):
+    # после копирования в буфер файл удаляется — на диск ничего не сохраняется.
+    package = inputs.serpantinum.packages.${pkgs.system}.default.overrideAttrs (old: {
+      postInstall = (old.postInstall or "") + ''
+        install -m0755 ${./serpantinum/screenshot.sh} "$out/share/serpantinum/scripts/screenshot.sh"
+        # Фоны полупрозрачные, текст/иконки непрозрачны:
+        #  - общий фон виджетов/бара/дока/панелей (base+surface*) -> 90%;
+        #  - левая панель (sidebar), floating-панель, меню питания и системная
+        #    панель (уведомления+выход), вкладки фокус/таймер/секундомер -> 80%;
+        #  - календарь/погода -> 95%.
+        #  - основной фон sidebar и системной панели -> 70%, а внутренние блоки
+        #    с иконками (пилюли виджетов, юзер/слайдеры/батарея/кнопки) -> 80%.
+        cd "$out/share/serpantinum"
+        patch -p1 < ${./serpantinum/theme-opacity.patch}
+        patch -p1 < ${./serpantinum/sidebar-opacity.patch}
+        patch -p1 < ${./serpantinum/sidebar-pills-opacity.patch}
+        patch -p1 < ${./serpantinum/floating-opacity.patch}
+        patch -p1 < ${./serpantinum/syspanel-opacity.patch}
+        patch -p1 < ${./serpantinum/timer-opacity.patch}
+        patch -p1 < ${./serpantinum/draw-opacity.patch}
+        patch -p1 < ${./serpantinum/lock-opacity.patch}
+        patch -p1 < ${./serpantinum/calendar-opacity.patch}
+        cd "$OLDPWD"
+      '';
+    });
     # Стартуем через exec-once в Hyprland (см. ниже) — под GDM graphical-session.target
     # неактивен, поэтому systemd-сервис не поднимется.
     systemd.enable = false;
@@ -84,11 +114,25 @@ in
     };
   };
 
+  # Снимок/логотип: этот скрипт запускает fastfetch при каждом новом терминале kitty
+  home.file."bin/mayfastfetch.sh" = {
+    source = ./bin/mayfastfetch.sh;
+    executable = true;
+  };
+
+  # fastfetch рисуется только на первом kitty-терминале текущего рабочего стола,
+  # чтобы большой логотип не спамил при каждом окне/вкладке.
+  programs.bash = {
+    enable = true;
+    initExtra = "$HOME/bin/mayfastfetch.sh";
+  };
+
   # --- Kitty: чёрный фон, белый текст, сиреневый акцент ---
   programs.kitty = {
     enable = true;
     settings = {
       copy_on_select = "clipboard";
+      background_opacity = 0.85;
       background = "#000000";
       foreground = "#ffffff";
       cursor = "#c4a7e7";

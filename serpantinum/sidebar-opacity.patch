@@ -1,0 +1,44 @@
+--- a/quickshell/bar/SideBar.qml	2026-09-14 12:46:26.685695919 +0500
++++ b/quickshell/bar/SideBar.qml	2026-09-14 12:50:39.897781189 +0500
+@@ -464,10 +464,10 @@
+         y: isFill ? 0 : contentWrapper.dynamicMinY
+         width: barWindow ? barWindow.barHeight : 40
+         height: isFill ? contentWrapper.height : (contentWrapper.dynamicMaxY - contentWrapper.dynamicMinY)
+-        color: Qt.alpha(ThemeBackend.base, (barWindow && barWindow.barOpacity !== undefined) ? barWindow.barOpacity : 1.0)
++        color: Qt.alpha(ThemeBackend.base, (barWindow && barWindow.barOpacity !== undefined) ? (barWindow.barOpacity * 0.7) : 0.7)
+         radius: isFill ? 0 : ThemeBackend.borderRadius
+         border.width: (isSolid || isFill) ? 0 : 1
+-        border.color: (isSolid || isFill) ? "transparent" : Qt.alpha(ThemeBackend.surface0, (barWindow && barWindow.barOpacity !== undefined) ? barWindow.barOpacity : 1.0)
++        border.color: (isSolid || isFill) ? "transparent" : Qt.alpha(ThemeBackend.surface0, (barWindow && barWindow.barOpacity !== undefined) ? (barWindow.barOpacity * 0.7) : 0.7)
+         visible: (isSolid || isFill) && (barWindow ? !barWindow.positionChanging : true)
+         opacity: visible ? 1.0 : 0.0
+ 
+@@ -516,7 +516,7 @@
+         onPaint: {
+             var ctx = getContext("2d");
+             ctx.reset();
+-            ctx.fillStyle = Qt.alpha(ThemeBackend.base, (barWindow && barWindow.barOpacity !== undefined) ? barWindow.barOpacity : 1.0);
++            ctx.fillStyle = Qt.alpha(ThemeBackend.base, (barWindow && barWindow.barOpacity !== undefined) ? (barWindow.barOpacity * 0.7) : 0.7);
+             ctx.beginPath();
+             if (barWindow && barWindow.barPosition === "right") {
+                 ctx.moveTo(width, 0);
+@@ -568,7 +568,7 @@
+         onPaint: {
+             var ctx = getContext("2d");
+             ctx.reset();
+-            ctx.fillStyle = Qt.alpha(ThemeBackend.base, (barWindow && barWindow.barOpacity !== undefined) ? barWindow.barOpacity : 1.0);
++            ctx.fillStyle = Qt.alpha(ThemeBackend.base, (barWindow && barWindow.barOpacity !== undefined) ? (barWindow.barOpacity * 0.7) : 0.7);
+             ctx.beginPath();
+             if (barWindow && barWindow.barPosition === "right") {
+                 ctx.moveTo(width, height);
+@@ -643,8 +643,8 @@
+             opacity: visible ? 1.0 : 0.0
+ 
+             color: (contentWrapper.isSolid && contentWrapper.distinctPills)
+-                ? Qt.alpha(Qt.darker(ThemeBackend.surface0, 1.15), (barWindow && barWindow.barOpacity !== undefined) ? barWindow.barOpacity : 1.0)
+-                : Qt.alpha(ThemeBackend.base, (barWindow && barWindow.barOpacity !== undefined) ? barWindow.barOpacity : 1.0)
++                ? Qt.alpha(Qt.darker(ThemeBackend.surface0, 1.15), (barWindow && barWindow.barOpacity !== undefined) ? (barWindow.barOpacity * 0.8) : 0.8)
++                : Qt.alpha(ThemeBackend.base, (barWindow && barWindow.barOpacity !== undefined) ? (barWindow.barOpacity * 0.8) : 0.8)
+             radius: ThemeBackend.borderRadius
+             border.width: 0
+ 
