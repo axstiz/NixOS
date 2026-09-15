@@ -107,10 +107,10 @@
         "serpantinum-wallpapers": "serpantinum-wallpapers"
       },
       "locked": {
-        "lastModified": 1789166170,
-        "narHash": "sha256-O8stu66Uzbwu6eeyit5rEOjD8jAGWZ63LI/Zhazw48s=",
+        "lastModified": 1789372219,
+        "narHash": "sha256-q+NO3phlQjRM9ytjlaNXhOuik7dwgxuJqh7td5QvU7A=",
         "ref": "refs/heads/master",
-        "rev": "f24a10c264731c0991e7deac76c602698a6c237f",
+        "rev": "48620a5c7a86f0a73323a87c0b04e0200a54503a",
         "shallow": true,
         "type": "git",
         "url": "https://github.com/ilyamiro/serpantinum"

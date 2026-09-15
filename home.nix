@@ -20,7 +20,10 @@ in
   home.homeDirectory = "/home/litsummer";
   home.stateVersion = "24.11";
 
-  home.packages = [ ];
+  home.packages = [
+    # OnlyOffice: Documents (Word), Spreadsheets (Excel), Presentations (PowerPoint)
+    pkgs.onlyoffice-desktopeditors
+  ];
 
   # Курсор для GTK-приложений (Nautilus, Telegram и т.д.) — бледно-сиреневый Rose Pine.
   home.pointerCursor = {
