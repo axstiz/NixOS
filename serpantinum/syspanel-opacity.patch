@@ -1,11 +1,11 @@
---- a/quickshell/syspanel/SystemPanel.qml	2026-09-14 12:46:26.687724066 +0500
-+++ b/quickshell/syspanel/SystemPanel.qml	2026-09-14 12:51:38.569427012 +0500
+--- a/quickshell/syspanel/SystemPanel.qml
++++ b/quickshell/syspanel/SystemPanel.qml
 @@ -383,7 +383,7 @@
          signal leftClicked()
          signal rightClicked()
  
 -        color: isActive ? activeColor : (qaMa.containsMouse ? ThemeBackend.surface1 : Qt.darker(ThemeBackend.surface0, 1.04))
-+        color: isActive ? activeColor : (qaMa.containsMouse ? ThemeBackend.surface1 : Qt.alpha(Qt.darker(ThemeBackend.surface0, 1.04), 0.80))
++        color: isActive ? activeColor : (qaMa.containsMouse ? ThemeBackend.surface1 : Qt.alpha(Qt.darker(ThemeBackend.surface0, 1.04), OpacityExt.syspanelBlocks))
          Behavior on color {
              enabled: root.visible
              ColorAnimation { duration: 150 }
@@ -14,7 +14,7 @@
          id: sidebarPanel
          anchors.fill: parent
 -        color: Qt.rgba(ThemeBackend.base.r, ThemeBackend.base.g, ThemeBackend.base.b, 0.97)
-+        color: Qt.rgba(ThemeBackend.base.r, ThemeBackend.base.g, ThemeBackend.base.b, 0.70)
++        color: Qt.rgba(ThemeBackend.base.r, ThemeBackend.base.g, ThemeBackend.base.b, OpacityExt.syspanelBg)
          radius: Math.min(ThemeBackend.borderRadius, root.s(28))
          border.width: 0
          clip: true
@@ -23,7 +23,7 @@
                      Layout.maximumHeight: root.s(54)
                      radius: root.boxRadius
 -                    color: Qt.darker(ThemeBackend.surface0, 1.04)
-+                    color: Qt.alpha(Qt.darker(ThemeBackend.surface0, 1.04), 0.80)
++                    color: Qt.alpha(Qt.darker(ThemeBackend.surface0, 1.04), OpacityExt.syspanelBlocks)
  
                      opacity: root.introTop
                      transform: [
@@ -32,34 +32,16 @@
                      Layout.maximumHeight: slidersCol.implicitHeight + root.s(20)
                      radius: root.boxRadius
 -                    color: Qt.darker(ThemeBackend.surface0, 1.04)
-+                    color: Qt.alpha(Qt.darker(ThemeBackend.surface0, 1.04), 0.80)
++                    color: Qt.alpha(Qt.darker(ThemeBackend.surface0, 1.04), OpacityExt.syspanelBlocks)
  
                      opacity: root.introSliders
                      transform: [
-@@ -927,7 +927,7 @@
-                     Layout.minimumHeight: root.s(68)
-                     cornerRadius: root.boxRadius
-                     cardRadius: root.cardRadius
--                    baseColor: Qt.darker(ThemeBackend.surface0, 1.04)
-+                    baseColor: Qt.alpha(Qt.darker(ThemeBackend.surface0, 1.04), 0.80)
-                     rootContext: root
- 
-                     opacity: root.introNotifs
 @@ -971,7 +971,7 @@
                                  Scale { origin.x: actionCapsule.width / 2; origin.y: actionCapsule.height / 2; xScale: 0.90 + (0.10 * root.introActions); yScale: 0.90 + (0.10 * root.introActions) }
                              ]
  
 -                            color: (actionMa.containsMouse && !isDisabled) ? ThemeBackend.surface1 : Qt.darker(ThemeBackend.surface0, 1.04)
-+                            color: (actionMa.containsMouse && !isDisabled) ? ThemeBackend.surface1 : Qt.alpha(Qt.darker(ThemeBackend.surface0, 1.04), 0.80)
++                            color: (actionMa.containsMouse && !isDisabled) ? ThemeBackend.surface1 : Qt.alpha(Qt.darker(ThemeBackend.surface0, 1.04), OpacityExt.syspanelBlocks)
                              Behavior on color {
                                  enabled: root.visible
                                  ColorAnimation { duration: 200 }
-@@ -1229,7 +1229,7 @@
-                     Layout.preferredHeight: root.isDesktop ? root.s(52) : root.s(72)
-                     Layout.maximumHeight: Layout.preferredHeight
-                     radius: root.isDesktop ? root.s(15) : root.boxRadius
--                    color: root.isDesktop ? "transparent" : Qt.darker(ThemeBackend.surface0, 1.04)
-+                    color: root.isDesktop ? "transparent" : Qt.alpha(Qt.darker(ThemeBackend.surface0, 1.04), 0.80)
-                     clip: true
- 
-                     opacity: root.introCore

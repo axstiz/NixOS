@@ -1,7 +1,11 @@
 --- a/quickshell/quickactions/actions/DrawAction.qml
 +++ b/quickshell/quickactions/actions/DrawAction.qml
-@@ -66,3 +66,3 @@
+@@ -64,7 +64,7 @@
+     }
+ 
      property color baseTextColor: ThemeBackend.text
 -    property color solidBgColor: ThemeBackend.mantle
-+    property color solidBgColor: Qt.rgba(ThemeBackend.mantle.r, ThemeBackend.mantle.g, ThemeBackend.mantle.b, 0.80)
++    property color solidBgColor: Qt.rgba(ThemeBackend.mantle.r, ThemeBackend.mantle.g, ThemeBackend.mantle.b, OpacityExt.draw)
      property color themeBaseColor: ThemeBackend.base
+     
+     property color panelBgColor: Qt.rgba(themeBaseColor.r, themeBaseColor.g, themeBaseColor.b, 0.85)

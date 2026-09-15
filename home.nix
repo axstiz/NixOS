@@ -66,15 +66,13 @@ in
     package = inputs.serpantinum.packages.${pkgs.system}.default.overrideAttrs (old: {
       postInstall = (old.postInstall or "") + ''
         install -m0755 ${./serpantinum/screenshot.sh} "$out/share/serpantinum/scripts/screenshot.sh"
-        # Фоны полупрозрачные, текст/иконки непрозрачны:
-        #  - общий фон виджетов/бара/дока/панелей (base+surface*) -> 90%;
-        #  - левая панель (sidebar), floating-панель, меню питания и системная
-        #    панель (уведомления+выход), вкладки фокус/таймер/секундомер -> 80%;
-        #  - календарь/погода -> 95%.
-        #  - основной фон sidebar и системной панели -> 70%, а внутренние блоки
-        #    с иконками (пилюли виджетов, юзер/слайдеры/батарея/кнопки) -> 80%.
-        #  - экран разблокировки (mod+L): центральная панель -> 70%, внутренние
-        #    пилюли (пин, клавиатура/батарея, кнопки питания, погода/медиа) -> 80%.
+        # --- Прозрачности и вкладка «Расширенные настройки» ---
+        # Патчи заменяют зашитые константы альфы на рантайм-ручки OpacityExt
+        # (Config.rawSettings.theme.opacityExt.*, ключ — % непрозрачности 0..100).
+        # Обнаруживать ключи в settings.json не нужно: отсутствие ключа = дефолт
+        # из патча, который равен прежнему захардкоженному значению — после
+        # переключения вид шелла 1-в-1 прежнему. Меняет значения вкладка
+        # «Расширенные настройки» в Guide (файл beta/BetaTab.qml, ниже).
         cd "$out/share/serpantinum"
         patch -p1 < ${./serpantinum/theme-opacity.patch}
         patch -p1 < ${./serpantinum/sidebar-opacity.patch}
@@ -85,6 +83,15 @@ in
         patch -p1 < ${./serpantinum/draw-opacity.patch}
         patch -p1 < ${./serpantinum/lock-opacity.patch}
         patch -p1 < ${./serpantinum/calendar-opacity.patch}
+        patch -p1 < ${./serpantinum/extended-tab.patch}
+        # Рантайм-синглтон прозрачности регистрируется в root-qmldir шелла
+        install -m0644 ${./serpantinum/OpacityExt.qml} "$out/share/serpantinum/quickshell/singletons/theme/OpacityExt.qml"
+        sed -i "/singleton ThemeBackend 1.0/i singleton OpacityExt 1.0 singletons/theme/OpacityExt.qml" \
+          "$out/share/serpantinum/quickshell/qmldir"
+        # Вкладка «Расширенные настройки» (beta/BetaTab.qmlLoader-файл)
+        mkdir -p "$out/share/serpantinum/quickshell/guide/beta"
+        install -m0644 ${./serpantinum/beta/BetaTab.qml} \
+          "$out/share/serpantinum/quickshell/guide/beta/BetaTab.qml"
         cd "$OLDPWD"
       '';
     });

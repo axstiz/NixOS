@@ -1,11 +1,11 @@
---- a/quickshell/quickactions/Floating.qml	2026-09-14 11:48:01.234331825 +0500
-+++ b/quickshell/quickactions/Floating.qml	2026-09-14 11:48:07.872027695 +0500
+--- a/quickshell/quickactions/Floating.qml
++++ b/quickshell/quickactions/Floating.qml
 @@ -1077,7 +1077,7 @@
                          height: floatingWidget.outerCornerRadius
                          preferredRendererType: Shape.CurveRenderer
                          ShapePath {
 -                            fillColor: Qt.rgba(ThemeBackend.base.r, ThemeBackend.base.g, ThemeBackend.base.b, 0.95)
-+                            fillColor: Qt.rgba(ThemeBackend.base.r, ThemeBackend.base.g, ThemeBackend.base.b, 0.80)
++                            fillColor: Qt.rgba(ThemeBackend.base.r, ThemeBackend.base.g, ThemeBackend.base.b, OpacityExt.floating)
                              strokeColor: "transparent"
                              startX: 0
                              startY: 0
@@ -14,7 +14,7 @@
                          preferredRendererType: Shape.CurveRenderer
                          ShapePath {
 -                            fillColor: Qt.rgba(ThemeBackend.base.r, ThemeBackend.base.g, ThemeBackend.base.b, 0.95)
-+                            fillColor: Qt.rgba(ThemeBackend.base.r, ThemeBackend.base.g, ThemeBackend.base.b, 0.80)
++                            fillColor: Qt.rgba(ThemeBackend.base.r, ThemeBackend.base.g, ThemeBackend.base.b, OpacityExt.floating)
                              strokeColor: "transparent"
                              startX: 0
                              startY: floatingWidget.outerCornerRadius
@@ -23,7 +23,7 @@
                          topRightRadius: floatingWidget.containerRadius
                          bottomRightRadius: floatingWidget.containerRadius
 -                        color: Qt.rgba(ThemeBackend.base.r, ThemeBackend.base.g, ThemeBackend.base.b, 0.95)
-+                        color: Qt.rgba(ThemeBackend.base.r, ThemeBackend.base.g, ThemeBackend.base.b, 0.80)
++                        color: Qt.rgba(ThemeBackend.base.r, ThemeBackend.base.g, ThemeBackend.base.b, OpacityExt.floating)
                          border.width: 0
  
                          MouseArea {

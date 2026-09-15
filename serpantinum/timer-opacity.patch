@@ -1,10 +1,11 @@
 --- a/quickshell/quickactions/actions/Timer.qml
 +++ b/quickshell/quickactions/actions/Timer.qml
-@@ -327,6 +327,6 @@
+@@ -326,7 +326,7 @@
+ 
          Rectangle {
              anchors.fill: parent
 -            color: ThemeBackend.mantle
-+            color: Qt.rgba(ThemeBackend.mantle.r, ThemeBackend.mantle.g, ThemeBackend.mantle.b, 0.80)
++            color: Qt.rgba(ThemeBackend.mantle.r, ThemeBackend.mantle.g, ThemeBackend.mantle.b, OpacityExt.timer)
              radius: ThemeBackend.borderRadius
              z: -1
          }

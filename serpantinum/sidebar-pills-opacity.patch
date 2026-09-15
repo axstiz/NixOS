@@ -1,72 +1,66 @@
-diff -ur a/quickshell/bar/sidemodules/system/SideBatWidget.qml b/quickshell/bar/sidemodules/system/SideBatWidget.qml
---- a/quickshell/bar/sidemodules/system/SideBatWidget.qml	2026-09-14 12:49:35.495112363 +0500
-+++ b/quickshell/bar/sidemodules/system/SideBatWidget.qml	2026-09-14 13:24:25.694805460 +0500
+--- a/quickshell/bar/sidemodules/system/SideBatWidget.qml
++++ b/quickshell/bar/sidemodules/system/SideBatWidget.qml
 @@ -51,7 +51,7 @@
  
      radius: ThemeBackend.borderRadius
      border.width: 0
 -    color: isGrouped ? "transparent" : (isSolid ? (distinctPills ? Qt.darker(ThemeBackend.surface0, 1.15) : "transparent") : ThemeBackend.base)
-+    color: isGrouped ? "transparent" : (isSolid ? (distinctPills ? Qt.alpha(Qt.darker(ThemeBackend.surface0, 1.15), 0.60) : "transparent") : ThemeBackend.base)
++    color: isGrouped ? "transparent" : (isSolid ? (distinctPills ? Qt.alpha(Qt.darker(ThemeBackend.surface0, 1.15), OpacityExt.pills) : "transparent") : ThemeBackend.base)
      clip: true
      layer.enabled: true
  
-diff -ur a/quickshell/bar/sidemodules/system/SideBtWidget.qml b/quickshell/bar/sidemodules/system/SideBtWidget.qml
---- a/quickshell/bar/sidemodules/system/SideBtWidget.qml	2026-09-14 12:49:35.495166333 +0500
-+++ b/quickshell/bar/sidemodules/system/SideBtWidget.qml	2026-09-14 13:24:25.694951121 +0500
+--- a/quickshell/bar/sidemodules/system/SideBtWidget.qml
++++ b/quickshell/bar/sidemodules/system/SideBtWidget.qml
 @@ -43,7 +43,7 @@
  
      radius: ThemeBackend.borderRadius
      border.width: 0
 -    color: isGrouped ? "transparent" : (isSolid ? (distinctPills ? Qt.darker(ThemeBackend.surface0, 1.15) : "transparent") : ThemeBackend.base)
-+    color: isGrouped ? "transparent" : (isSolid ? (distinctPills ? Qt.alpha(Qt.darker(ThemeBackend.surface0, 1.15), 0.60) : "transparent") : ThemeBackend.base)
++    color: isGrouped ? "transparent" : (isSolid ? (distinctPills ? Qt.alpha(Qt.darker(ThemeBackend.surface0, 1.15), OpacityExt.pills) : "transparent") : ThemeBackend.base)
      clip: true
  
      opacity: (showLayout && moduleActive) ? ((barWindow && barWindow.barOpacity !== undefined) ? barWindow.barOpacity : 1.0) : 0.0
-diff -ur a/quickshell/bar/sidemodules/system/SideKbWidget.qml b/quickshell/bar/sidemodules/system/SideKbWidget.qml
---- a/quickshell/bar/sidemodules/system/SideKbWidget.qml	2026-09-14 12:49:35.495206497 +0500
-+++ b/quickshell/bar/sidemodules/system/SideKbWidget.qml	2026-09-14 13:24:25.695048894 +0500
+--- a/quickshell/bar/sidemodules/system/SideKbWidget.qml
++++ b/quickshell/bar/sidemodules/system/SideKbWidget.qml
 @@ -95,7 +95,7 @@
  
      radius: ThemeBackend.borderRadius
      border.width: 0
 -    color: isGrouped ? "transparent" : (isSolid ? (distinctPills ? Qt.darker(ThemeBackend.surface0, 1.15) : "transparent") : ThemeBackend.base)
-+    color: isGrouped ? "transparent" : (isSolid ? (distinctPills ? Qt.alpha(Qt.darker(ThemeBackend.surface0, 1.15), 0.60) : "transparent") : ThemeBackend.base)
++    color: isGrouped ? "transparent" : (isSolid ? (distinctPills ? Qt.alpha(Qt.darker(ThemeBackend.surface0, 1.15), OpacityExt.pills) : "transparent") : ThemeBackend.base)
      clip: true
  
      opacity: (showLayout && moduleActive) ? ((barWindow && barWindow.barOpacity !== undefined) ? barWindow.barOpacity : 1.0) : 0.0
-diff -ur a/quickshell/bar/sidemodules/system/SideSysMonWidget.qml b/quickshell/bar/sidemodules/system/SideSysMonWidget.qml
---- a/quickshell/bar/sidemodules/system/SideSysMonWidget.qml	2026-09-14 12:49:35.495243926 +0500
-+++ b/quickshell/bar/sidemodules/system/SideSysMonWidget.qml	2026-09-14 13:24:25.695137919 +0500
+--- a/quickshell/bar/sidemodules/system/SideSysMonWidget.qml
++++ b/quickshell/bar/sidemodules/system/SideSysMonWidget.qml
 @@ -52,7 +52,7 @@
  
      radius: Math.min(ThemeBackend.borderRadius, width / 2)
      border.width: 0
 -    color: isGrouped ? "transparent" : (isSolid ? (distinctPills ? Qt.darker(ThemeBackend.surface0, 1.15) : "transparent") : ThemeBackend.base)
-+    color: isGrouped ? "transparent" : (isSolid ? (distinctPills ? Qt.alpha(Qt.darker(ThemeBackend.surface0, 1.15), 0.60) : "transparent") : ThemeBackend.base)
++    color: isGrouped ? "transparent" : (isSolid ? (distinctPills ? Qt.alpha(Qt.darker(ThemeBackend.surface0, 1.15), OpacityExt.pills) : "transparent") : ThemeBackend.base)
      clip: true
      layer.enabled: true
  
-diff -ur a/quickshell/bar/sidemodules/system/SideVolWidget.qml b/quickshell/bar/sidemodules/system/SideVolWidget.qml
---- a/quickshell/bar/sidemodules/system/SideVolWidget.qml	2026-09-14 12:49:35.495283269 +0500
-+++ b/quickshell/bar/sidemodules/system/SideVolWidget.qml	2026-09-14 13:24:25.695241532 +0500
+--- a/quickshell/bar/sidemodules/system/SideVolWidget.qml
++++ b/quickshell/bar/sidemodules/system/SideVolWidget.qml
 @@ -42,7 +42,7 @@
  
      radius: ThemeBackend.borderRadius
      border.width: 0
 -    color: isGrouped ? "transparent" : (isSolid ? (distinctPills ? Qt.darker(ThemeBackend.surface0, 1.15) : "transparent") : ThemeBackend.base)
-+    color: isGrouped ? "transparent" : (isSolid ? (distinctPills ? Qt.alpha(Qt.darker(ThemeBackend.surface0, 1.15), 0.60) : "transparent") : ThemeBackend.base)
++    color: isGrouped ? "transparent" : (isSolid ? (distinctPills ? Qt.alpha(Qt.darker(ThemeBackend.surface0, 1.15), OpacityExt.pills) : "transparent") : ThemeBackend.base)
      clip: true
  
      opacity: (showLayout && moduleActive) ? ((barWindow && barWindow.barOpacity !== undefined) ? barWindow.barOpacity : 1.0) : 0.0
-diff -ur a/quickshell/bar/sidemodules/system/SideWifiWidget.qml b/quickshell/bar/sidemodules/system/SideWifiWidget.qml
---- a/quickshell/bar/sidemodules/system/SideWifiWidget.qml	2026-09-14 12:49:35.495318474 +0500
-+++ b/quickshell/bar/sidemodules/system/SideWifiWidget.qml	2026-09-14 13:24:25.695321611 +0500
+--- a/quickshell/bar/sidemodules/system/SideWifiWidget.qml
++++ b/quickshell/bar/sidemodules/system/SideWifiWidget.qml
 @@ -51,7 +51,7 @@
  
      radius: ThemeBackend.borderRadius
      border.width: 0
 -    color: isGrouped ? "transparent" : (isSolid ? (distinctPills ? Qt.darker(ThemeBackend.surface0, 1.15) : "transparent") : ThemeBackend.base)
-+    color: isGrouped ? "transparent" : (isSolid ? (distinctPills ? Qt.alpha(Qt.darker(ThemeBackend.surface0, 1.15), 0.60) : "transparent") : ThemeBackend.base)
++    color: isGrouped ? "transparent" : (isSolid ? (distinctPills ? Qt.alpha(Qt.darker(ThemeBackend.surface0, 1.15), OpacityExt.pills) : "transparent") : ThemeBackend.base)
      clip: true
  
      opacity: (showLayout && moduleActive) ? ((barWindow && barWindow.barOpacity !== undefined) ? barWindow.barOpacity : 1.0) : 0.0

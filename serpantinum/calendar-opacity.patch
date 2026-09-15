@@ -1,11 +1,11 @@
---- a/quickshell/calendar/CalendarPopup.qml	2026-09-14 12:22:10.057077433 +0500
-+++ b/quickshell/calendar/CalendarPopup.qml	2026-09-14 12:22:26.829221659 +0500
+--- a/quickshell/calendar/CalendarPopup.qml
++++ b/quickshell/calendar/CalendarPopup.qml
 @@ -428,7 +428,7 @@
          Rectangle {
              anchors.fill: parent
              radius: ThemeBackend.borderRadius
 -            color: window.base
-+            color: Qt.rgba(window.base.r, window.base.g, window.base.b, 0.95)
++            color: Qt.rgba(window.base.r, window.base.g, window.base.b, OpacityExt.calendar)
              border.color: window.surface0
              border.width: 1
              clip: true

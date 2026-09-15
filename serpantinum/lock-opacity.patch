@@ -1,11 +1,11 @@
---- a/quickshell/lock/Lock.qml	2026-09-14 13:07:05.008419185 +0500
-+++ b/quickshell/lock/Lock.qml	2026-09-14 13:17:21.541724303 +0500
+--- a/quickshell/lock/Lock.qml
++++ b/quickshell/lock/Lock.qml
 @@ -1150,7 +1150,7 @@
                                  width: Math.min(parent.width - screenRoot.s(48), screenRoot.s(440) + (screenRoot.wingsReveal * screenRoot.s(780)))
                                  height: screenRoot.s(540)
                                  radius: ThemeBackend.borderRadius * 1.5
 -                                color: ThemeBackend.surface0
-+                                color: Qt.alpha(ThemeBackend.surface0, 0.50)
++                                color: Qt.alpha(ThemeBackend.surface0, OpacityExt.lockPanel)
                                  border.width: 1.5
                                  border.color: ThemeBackend.surface1
                                  clip: true
@@ -14,7 +14,7 @@
                                                  buttonText: screenRoot.currentUser + " • " + lockUI.statusText
                                                  textFontSize: screenRoot.s(13)
 -                                                accentColor: Qt.lighter(ThemeBackend.surface0, 1.28)
-+                                                accentColor: Qt.alpha(Qt.lighter(ThemeBackend.surface0, 1.28), 0.70)
++                                                accentColor: Qt.alpha(Qt.lighter(ThemeBackend.surface0, 1.28), OpacityExt.lockInner)
                                                  textColor: lockUI.failed ? ThemeBackend.red : (lockUI.authenticating ? ThemeBackend.peach : ThemeBackend.text)
                                              }
  
@@ -26,10 +26,10 @@
 -                                                hoverColor: Qt.lighter(ThemeBackend.surface0, 1.28)
 -                                                focusColor: Qt.lighter(ThemeBackend.surface0, 1.28)
 -                                                activeColor: Qt.lighter(ThemeBackend.surface0, 1.28)
-+                                                baseColor: Qt.alpha(Qt.lighter(ThemeBackend.surface0, 1.28), 0.70)
-+                                                hoverColor: Qt.alpha(Qt.lighter(ThemeBackend.surface0, 1.28), 0.70)
-+                                                focusColor: Qt.alpha(Qt.lighter(ThemeBackend.surface0, 1.28), 0.70)
-+                                                activeColor: Qt.alpha(Qt.lighter(ThemeBackend.surface0, 1.28), 0.70)
++                                                baseColor: Qt.alpha(Qt.lighter(ThemeBackend.surface0, 1.28), OpacityExt.lockInner)
++                                                hoverColor: Qt.alpha(Qt.lighter(ThemeBackend.surface0, 1.28), OpacityExt.lockInner)
++                                                focusColor: Qt.alpha(Qt.lighter(ThemeBackend.surface0, 1.28), OpacityExt.lockInner)
++                                                activeColor: Qt.alpha(Qt.lighter(ThemeBackend.surface0, 1.28), OpacityExt.lockInner)
                                                  accentColor: ThemeBackend.mauve
                                                  textColor: ThemeBackend.text
                                                  subTextColor: ThemeBackend.subtext0
@@ -38,7 +38,7 @@
                                                      buttonText: root.kbLayout
                                                      textFontSize: screenRoot.s(12)
 -                                                    accentColor: Qt.lighter(ThemeBackend.surface0, 1.28)
-+                                                    accentColor: Qt.alpha(Qt.lighter(ThemeBackend.surface0, 1.28), 0.70)
++                                                    accentColor: Qt.alpha(Qt.lighter(ThemeBackend.surface0, 1.28), OpacityExt.lockInner)
                                                      textColor: ThemeBackend.text
                                                      onClicked: root.switchKbLayout()
                                                  }
@@ -47,7 +47,7 @@
                                                      buttonText: root.batPercent
                                                      textFontSize: screenRoot.s(12)
 -                                                    accentColor: Qt.lighter(ThemeBackend.surface0, 1.28)
-+                                                    accentColor: Qt.alpha(Qt.lighter(ThemeBackend.surface0, 1.28), 0.70)
++                                                    accentColor: Qt.alpha(Qt.lighter(ThemeBackend.surface0, 1.28), OpacityExt.lockInner)
                                                      textColor: root.batDynamicColor
                                                  }
                                              }
@@ -56,7 +56,7 @@
                                      buttonIcon: screenRoot.powerMenuOpen ? "󰅖" : "󰐥"
                                      iconFontSize: screenRoot.s(20)
 -                                    accentColor: screenRoot.powerMenuOpen ? ThemeBackend.surface2 : Qt.lighter(ThemeBackend.surface0, 1.28)
-+                                    accentColor: screenRoot.powerMenuOpen ? ThemeBackend.surface2 : Qt.alpha(Qt.lighter(ThemeBackend.surface0, 1.28), 0.70)
++                                    accentColor: screenRoot.powerMenuOpen ? ThemeBackend.surface2 : Qt.alpha(Qt.lighter(ThemeBackend.surface0, 1.28), OpacityExt.lockInner)
                                      textColor: screenRoot.powerMenuOpen ? ThemeBackend.text : ThemeBackend.red
                                      onClicked: screenRoot.powerMenuOpen = !screenRoot.powerMenuOpen
                                  }
@@ -65,7 +65,7 @@
                                  opacity: screenRoot.powerMenuOpen ? 1.0 : 0.0
  
 -                                color: Qt.rgba(ThemeBackend.surface0.r, ThemeBackend.surface0.g, ThemeBackend.surface0.b, 0.45)
-+                                color: Qt.rgba(ThemeBackend.surface0.r, ThemeBackend.surface0.g, ThemeBackend.surface0.b, 0.70)
++                                color: Qt.rgba(ThemeBackend.surface0.r, ThemeBackend.surface0.g, ThemeBackend.surface0.b, OpacityExt.lockPowerMenu)
                                  border.color: Qt.rgba(ThemeBackend.surface1.r, ThemeBackend.surface1.g, ThemeBackend.surface1.b, 0.4)
                                  border.width: 1
  
@@ -74,7 +74,7 @@
                                          buttonText: I18n.t("lock.power.suspend")
                                          accentColor: ThemeBackend.mauve
 -                                        baseColor: ThemeBackend.surface0
-+                                        baseColor: Qt.alpha(ThemeBackend.surface0, 0.70)
++                                        baseColor: Qt.alpha(ThemeBackend.surface0, OpacityExt.lockPowerMenu)
                                          hoverColor: ThemeBackend.surface1
                                          fillDuration: 1200
                                          onTriggered: { screenRoot.powerMenuOpen = false; suspendProcess.running = true; }
@@ -83,7 +83,7 @@
                                          buttonText: I18n.t("lock.power.reboot")
                                          accentColor: ThemeBackend.blue
 -                                        baseColor: ThemeBackend.surface0
-+                                        baseColor: Qt.alpha(ThemeBackend.surface0, 0.70)
++                                        baseColor: Qt.alpha(ThemeBackend.surface0, OpacityExt.lockPowerMenu)
                                          hoverColor: ThemeBackend.surface1
                                          fillDuration: 1200
                                          onTriggered: { screenRoot.powerMenuOpen = false; reloadProcess.running = true; }
@@ -92,7 +92,7 @@
                                          buttonText: I18n.t("lock.power.power_off")
                                          accentColor: ThemeBackend.red
 -                                        baseColor: ThemeBackend.surface0
-+                                        baseColor: Qt.alpha(ThemeBackend.surface0, 0.70)
++                                        baseColor: Qt.alpha(ThemeBackend.surface0, OpacityExt.lockPowerMenu)
                                          hoverColor: ThemeBackend.surface1
                                          fillDuration: 1200
                                          onTriggered: { screenRoot.powerMenuOpen = false; poweroffProcess.running = true; }
@@ -101,16 +101,61 @@
                                      anchors.fill: parent
                                      radius: screenRoot.s(16)
 -                                    color: Qt.lighter(ThemeBackend.surface0, 1.28)
-+                                    color: Qt.alpha(Qt.lighter(ThemeBackend.surface0, 1.28), 0.70)
++                                    color: Qt.alpha(Qt.lighter(ThemeBackend.surface0, 1.28), OpacityExt.lockInner)
                                      border.width: 1
                                      border.color: Qt.rgba(ThemeBackend.text.r, ThemeBackend.text.g, ThemeBackend.text.b, 0.06)
                                  }
+@@ -1694,7 +1694,7 @@
+                                     width: systemUsageBox.cellW(0.0, 0.333)
+                                     height: systemUsageBox.cellH(0.0, 0.5)
+                                     value: screenRoot.cpuUsage
+-                                    colorBase: Qt.lighter(ThemeBackend.surface0, 1.28)
++                                    colorBase: Qt.alpha(Qt.lighter(ThemeBackend.surface0, 1.28), OpacityExt.lockInner)
+                                     colorFill: Qt.lighter(ThemeBackend.mauve, 1.35)
+                                     icon: "\uF2DB"
+                                     title: I18n.t("quickactions.systemusage.cpu")
+@@ -1711,7 +1711,7 @@
+                                     width: systemUsageBox.cellW(0.333, 0.334)
+                                     height: systemUsageBox.cellH(0.0, 0.5)
+                                     value: screenRoot.ramUsage
+-                                    colorBase: Qt.lighter(ThemeBackend.surface0, 1.28)
++                                    colorBase: Qt.alpha(Qt.lighter(ThemeBackend.surface0, 1.28), OpacityExt.lockInner)
+                                     colorFill: Qt.lighter(ThemeBackend.mauve, 1.15)
+                                     icon: "\uF538"
+                                     title: I18n.t("quickactions.systemusage.ram")
+@@ -1728,7 +1728,7 @@
+                                     width: systemUsageBox.cellW(0.667, 0.333)
+                                     height: systemUsageBox.cellH(0.0, 0.5)
+                                     value: Math.max(0.0, Math.min(1.0, screenRoot.tempC / 100.0))
+-                                    colorBase: Qt.lighter(ThemeBackend.surface0, 1.28)
++                                    colorBase: Qt.alpha(Qt.lighter(ThemeBackend.surface0, 1.28), OpacityExt.lockInner)
+                                     colorFill: ThemeBackend.mauve
+                                     icon: "\uF2C9"
+                                     title: I18n.t("quickactions.systemusage.temp")
+@@ -1745,7 +1745,7 @@
+                                     width: systemUsageBox.cellW(0.0, 0.5)
+                                     height: systemUsageBox.cellH(0.5, 0.5)
+                                     value: screenRoot.diskUsagePercent
+-                                    colorBase: Qt.lighter(ThemeBackend.surface0, 1.28)
++                                    colorBase: Qt.alpha(Qt.lighter(ThemeBackend.surface0, 1.28), OpacityExt.lockInner)
+                                     colorFill: Qt.darker(ThemeBackend.mauve, 1.15)
+                                     icon: "\uF0A0"
+                                     title: screenRoot.diskTotalText
+@@ -1763,7 +1763,7 @@
+                                     width: systemUsageBox.cellW(0.5, 0.5)
+                                     height: systemUsageBox.cellH(0.5, 0.5)
+                                     value: 0.12
+-                                    colorBase: Qt.lighter(ThemeBackend.surface0, 1.28)
++                                    colorBase: Qt.alpha(Qt.lighter(ThemeBackend.surface0, 1.28), OpacityExt.lockInner)
+                                     colorFill: Qt.darker(ThemeBackend.mauve, 1.35)
+                                     icon: "󰤨"
+                                     title: I18n.t("quickactions.systemusage.net")
 @@ -1874,7 +1874,7 @@
                                  Layout.fillHeight: true
                                  hasShadow: true
                                  shadowColor: Qt.rgba(0, 0, 0, 0.22)
 -                                baseColor: Qt.lighter(ThemeBackend.surface0, 1.28)
-+                                baseColor: Qt.alpha(Qt.lighter(ThemeBackend.surface0, 1.28), 0.70)
++                                baseColor: Qt.alpha(Qt.lighter(ThemeBackend.surface0, 1.28), OpacityExt.lockInner)
                                  borderWidth: 1
                                  borderColor: Qt.rgba(ThemeBackend.text.r, ThemeBackend.text.g, ThemeBackend.text.b, 0.06)
                                  cornerRadius: screenRoot.s(16)
@@ -119,7 +164,7 @@
                                      anchors.fill: parent
                                      radius: screenRoot.s(16)
 -                                    color: Qt.lighter(ThemeBackend.surface0, 1.28)
-+                                    color: Qt.alpha(Qt.lighter(ThemeBackend.surface0, 1.28), 0.70)
++                                    color: Qt.alpha(Qt.lighter(ThemeBackend.surface0, 1.28), OpacityExt.lockInner)
                                      border.width: 1
                                      border.color: Qt.rgba(ThemeBackend.text.r, ThemeBackend.text.g, ThemeBackend.text.b, 0.06)
  
