@@ -1,10 +1,65 @@
-{ config, pkgs, inputs, ... }:
+{ config, lib, pkgs, inputs, ... }:
 
 let
   # Нативные диспатчеры Hyprland: serpantinum msg workspace использует hl.dsp.*,
   # которых нет в Hyprland 0.54 (см. qs_manager.sh) — переключаемся напрямую.
   serpWs = n: k: "$mainMod, ${k}, workspace, ${n}";
   serpWsMove = n: k: "$mainMod SHIFT, ${k}, movetoworkspace, ${n}";
+
+  # --- Прозрачности serpantinum: единый источник таблицы групп ---
+  # Отсюда генерируются: (а) runtime-синглтон OpacityExt.qml, (б) таблица
+  # для вкладки Guide «Расширенные настройки» (groups.json рядом с BetaTab).
+  opacityGroups = import ./serpantinum/opacity-groups.nix;
+
+  opacityExtQml = pkgs.writeText "OpacityExt.qml" ''
+    pragma Singleton
+    import QtQuick
+    import Quickshell
+    import Quickshell.Io
+
+    // GENERATED from serpantinum/opacity-groups.nix — не править руками!
+    // Рантайм-ручки прозрачности: значения читаются из settings.json
+    // (theme.opacityExt, проценты 0..100) быстрым FileView-watcher'ом;
+    // отсутствующий ключ = дефолт из этой таблицы (прежний вид).
+    Item {
+        id: root
+
+        property var map: ({ })
+        property int rev: 0
+
+        FileView {
+            id: settingsWatcher
+            path: Quickshell.env("QS_SETTINGS") ? Quickshell.env("QS_SETTINGS")
+                                                : (Quickshell.env("HOME") + "/.config/serpantinum/settings.json")
+            watchChanges: true
+            onFileChanged: reload()
+
+            onLoaded: {
+                try {
+                    let raw = typeof text === "function" ? text() : text;
+                    let parsed = JSON.parse(String(raw));
+                    let t = parsed.theme;
+                    root.map = (t && t.opacityExt) ? t.opacityExt : { };
+                    root.rev++;
+                    console.log("[OpacityExt] refreshed rev=" + root.rev);
+                } catch (e) {
+                    console.log("[OpacityExt] load failed: " + e);
+                }
+            }
+        }
+
+        Component.onCompleted: settingsWatcher.reload()
+
+  ${lib.concatMapStrings (g: ''
+        readonly property real ${g.key}: f("${g.key}", ${toString g.default})'' + "\n") opacityGroups}
+        function f(key, defPct) {
+            let v = root.map[key];
+            return (typeof v === "number" && v >= 0) ? (v / 100.0) : (defPct / 100.0);
+        }
+    }
+  '';
+
+  opacityGroupsJson = pkgs.writeText "groups.json" (builtins.toJSON opacityGroups);
 
   # Каталог обоев: наша дефолтная картинка + коллекция автора шелла (shell-wallpapers).
   # ~/Pictures/Wallpapers — симлинк на этот store-путь; Serpantinum/matugen читают его
@@ -84,14 +139,16 @@ in
         patch -p1 < ${./serpantinum/lock-opacity.patch}
         patch -p1 < ${./serpantinum/calendar-opacity.patch}
         patch -p1 < ${./serpantinum/extended-tab.patch}
-        # Рантайм-синглтон прозрачности регистрируется в root-qmldir шелла
-        install -m0644 ${./serpantinum/OpacityExt.qml} "$out/share/serpantinum/quickshell/singletons/theme/OpacityExt.qml"
+        # Рантайм-синглтон прозрачности: СГЕНЕРИРОВАН из opacity-groups.nix
+        install -m0644 ${opacityExtQml} "$out/share/serpantinum/quickshell/singletons/theme/OpacityExt.qml"
         sed -i "/singleton ThemeBackend 1.0/i singleton OpacityExt 1.0 singletons/theme/OpacityExt.qml" \
           "$out/share/serpantinum/quickshell/qmldir"
-        # Вкладка «Расширенные настройки» (beta/BetaTab.qmlLoader-файл)
+        # Вкладка «Расширенные настройки» (beta/BetaTab.qml) + таблица групп для неё
         mkdir -p "$out/share/serpantinum/quickshell/guide/beta"
         install -m0644 ${./serpantinum/beta/BetaTab.qml} \
           "$out/share/serpantinum/quickshell/guide/beta/BetaTab.qml"
+        install -m0644 ${opacityGroupsJson} \
+          "$out/share/serpantinum/quickshell/guide/beta/groups.json"
         cd "$OLDPWD"
       '';
     });

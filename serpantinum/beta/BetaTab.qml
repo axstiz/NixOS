@@ -2,6 +2,7 @@ import QtQuick
 import QtQuick.Layouts
 import QtQuick.Effects
 import Quickshell
+import Quickshell.Io
 import "../../"
 import "../../reusables"
 
@@ -20,23 +21,37 @@ Item {
     Behavior on opacity { NumberAnimation { duration: 250 } }
 
     // Группы прозрачности: значения — проценты непрозрачности (0..100).
-    // pct — дефолт из Nix-патчей; файл settings.json может отсутствовать/не иметь
-    // ключей theme.opacityExt — тогда всё выглядит ровно как «старый» вид.
-    property var groups: [
-        { key: "baseBg",        pct: 90, icon: "󰌗", title: "Основной фон", del: "Базовые поверхности (base/surface*): бар, панели, док" },
-        { key: "sidebarOuter",  pct: 55, icon: "󰍢", title: "Sidebar — фон", del: "Полупрозрачный фон авто-скрываемого бара сбоку" },
-        { key: "sidebarInner",  pct: 60, icon: "󰌵", title: "Sidebar — контент", del: "Контентная зона левой панели" },
-        { key: "pills",         pct: 60, icon: "󰓙", title: "Sidebar — пилюли", del: "Внутренние блоки с иконками (wifi/bt/vol/...)" },
-        { key: "floating",      pct: 80, icon: "󰖟", title: "Floating панель", del: "Floating-виджеты и quickactions" },
-        { key: "syspanelBg",    pct: 70, icon: "󰍴", title: "Системная панель — фон", del: "Основной фон syspanel (уведомления/система)" },
-        { key: "syspanelBlocks",pct: 80, icon: "󰋖", title: "Системная панель — блоки", del: "Внутренние блоки: слайдеры, уведомления, действия" },
-        { key: "lockPanel",     pct: 50, icon: "󰌾", title: "Lock — центральная панель", del: "Главная панель экрана разблокировки" },
-        { key: "lockInner",     pct: 70, icon: "󱌽", title: "Lock — пилюли/блоки", del: "Пин, кнопки, погода/медиа на экране блокировки" },
-        { key: "lockPowerMenu", pct: 70, icon: "󰐥", title: "Lock — меню питания", del: "Полупрозрачное меню выключения в lock-screen" },
-        { key: "calendar",      pct: 95, icon: "󰃭", title: "Календарь", del: "Панель календаря/погоды" },
-        { key: "timer",         pct: 80, icon: "󰄉", title: "Таймер/фокус", del: "Панель фокус-таймера и секундомера" },
-        { key: "draw",          pct: 80, icon: "󰽘", title: "Draw", del: "Панель быстрого рисования" }
-    ]
+    // Таблица групп ГЕНЕРИРУЕТСЯ из serpantinum/opacity-groups.nix и кладётся
+    // рядом с этим файлом как groups.json — править состав/дефолты только там.
+    property var groups: [ ]
+
+    FileView {
+        id: groupsFv
+        path: {
+            let p = Qt.resolvedUrl("groups.json").toString();
+            if (p.startsWith("file://")) p = p.substring(7);
+            return p;
+        }
+        watchChanges: false
+        onLoaded: {
+            try {
+                let raw = typeof text === "function" ? text() : text;
+                let parsed = JSON.parse(String(raw));
+                // дефолты из Nix-table: default -> pct (формат строк вкладки)
+                let out = [];
+                for (let i = 0; i < parsed.length; i++) {
+                    let g = parsed[i];
+                    out.push({ key: g.key, pct: g.default, icon: g.icon, title: g.title, del: g.del });
+                }
+                betaTabRoot.groups = out;
+                betaTabRoot.reloadCurrOpacity();
+            } catch (e) {
+                console.log("[BetaTab] groups.json load failed: " + e);
+            }
+        }
+    }
+
+    Component.onCompleted: groupsFv.reload()
 
     // Текущие значения групп (проценты). Ключи берутся из theme.opacityExt,
     // отсутствующие — из дефолтов групп выше.
@@ -58,6 +73,19 @@ Item {
         onTriggered: betaTabRoot.saveOpacity()
     }
 
+    // Пересборка currOpacity из текущей таблицы групп + сохранённых значений
+    function reloadCurrOpacity() {
+        let base = { };
+        try { base = Config.getSetting("theme", {}); } catch (e) { }
+        let saved = base.opacityExt || { };
+        let out = { };
+        for (let i = 0; i < groups.length; i++) {
+            let g = groups[i];
+            out[g.key] = (typeof saved[g.key] === "number") ? saved[g.key] : g.pct;
+        }
+        currOpacity = out;
+    }
+
     function saveOpacity() {
         if (typeof Config !== "undefined" && !Config.dataReady) return;
         let base = Object.assign({}, Config.getSetting("theme", {}));
@@ -67,16 +95,7 @@ Item {
 
     Connections {
         target: Config
-        function onSettingsLoaded() {
-            let base = Config.getSetting("theme", {});
-            let saved = base.opacityExt || {};
-            let out = {};
-            for (let i = 0; i < betaTabRoot.groups.length; i++) {
-                let g = betaTabRoot.groups[i];
-                out[g.key] = (typeof saved[g.key] === "number") ? saved[g.key] : g.pct;
-            }
-            betaTabRoot.currOpacity = out;
-        }
+        function onSettingsLoaded() { reloadCurrOpacity(); }
     }
 
     Flickable {
