@@ -71,6 +71,7 @@ EOF
       runHook postInstall
     '';
   };
+
 in
 
 {
@@ -169,7 +170,7 @@ in
 
   # --- ПАКЕТЫ ---
   environment.systemPackages = with pkgs; [
-    firefox git vscode kitty vim wget
+    firefox chromium git vscode kitty vim wget
     pywal imagemagick dart-sass
     wl-clipboard cliphist
     xdg-user-dirs
