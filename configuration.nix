@@ -198,6 +198,7 @@ in
     satty wf-recorder gpu-screen-recorder zbar python3 pulseaudioFull quickshell
     # Dev: Java 21 (учебные проекты), Docker CLI/Compose (CLI добавляет virtualisation.docker)
     jdk21
+    nodejs_22
     docker-compose
     lazydocker
   ];

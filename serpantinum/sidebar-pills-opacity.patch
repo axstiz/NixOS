@@ -1,3 +1,102 @@
+--- a/quickshell/bar/sidemodules/SideFocusWidget.qml
++++ b/quickshell/bar/sidemodules/SideFocusWidget.qml
+@@ -39,7 +39,7 @@
+     Behavior on height { NumberAnimation { duration: 250; easing.type: Easing.OutCubic } }
+ 
+     radius: ThemeBackend.borderRadius
+-    color: isGrouped ? "transparent" : (isSolid ? (distinctPills ? Qt.darker(ThemeBackend.surface0, 1.15) : "transparent") : ThemeBackend.base)
++    color: isGrouped ? "transparent" : (isSolid ? (distinctPills ? Qt.alpha(Qt.darker(ThemeBackend.surface0, 1.15), OpacityExt.pills) : "transparent") : ThemeBackend.base)
+     border.width: 0
+     clip: true
+ 
+--- a/quickshell/bar/sidemodules/SideInfoWidget.qml
++++ b/quickshell/bar/sidemodules/SideInfoWidget.qml
+@@ -176,7 +176,7 @@
+         width: parent.width
+         height: parent.height
+         radius: ThemeBackend.borderRadius
+-        color: sideInfoWidgetRoot.isGrouped ? "transparent" : (sideInfoWidgetRoot.isSolid ? (sideInfoWidgetRoot.distinctPills ? (sideInfoWidgetRoot.isHovered ? ThemeBackend.surface0 : Qt.darker(ThemeBackend.surface0, 1.15)) : "transparent") : (sideInfoWidgetRoot.isHovered ? ThemeBackend.surface0 : ThemeBackend.base))
++        color: sideInfoWidgetRoot.isGrouped ? "transparent" : (sideInfoWidgetRoot.isSolid ? (sideInfoWidgetRoot.distinctPills ? (sideInfoWidgetRoot.isHovered ? ThemeBackend.surface0 : Qt.alpha(Qt.darker(ThemeBackend.surface0, 1.15), OpacityExt.pills)) : "transparent") : (sideInfoWidgetRoot.isHovered ? ThemeBackend.surface0 : ThemeBackend.base))
+         border.width: 0
+         visible: height > 0
+ 
+--- a/quickshell/bar/sidemodules/SideMediaWidget.qml
++++ b/quickshell/bar/sidemodules/SideMediaWidget.qml
+@@ -103,7 +103,7 @@
+         anchors.fill: parent
+         z: -1
+         radius: ThemeBackend.borderRadius
+-        color: isGrouped ? "transparent" : (isSolid ? (distinctPills ? Qt.darker(ThemeBackend.surface0, 1.15) : "transparent") : ThemeBackend.base)
++        color: isGrouped ? "transparent" : (isSolid ? (distinctPills ? Qt.alpha(Qt.darker(ThemeBackend.surface0, 1.15), OpacityExt.pills) : "transparent") : ThemeBackend.base)
+         border.width: 0
+         clip: true
+     }
+--- a/quickshell/bar/sidemodules/SideTimeDateWidget.qml
++++ b/quickshell/bar/sidemodules/SideTimeDateWidget.qml
+@@ -80,7 +80,7 @@
+         width: parent.width
+         height: parent.height
+         radius: ThemeBackend.borderRadius
+-        color: sideTimeDateRoot.isGrouped ? "transparent" : (sideTimeDateRoot.isSolid ? (sideTimeDateRoot.distinctPills ? (sideTimeDateRoot.isHovered ? ThemeBackend.surface0 : Qt.darker(ThemeBackend.surface0, 1.15)) : "transparent") : (sideTimeDateRoot.isHovered ? ThemeBackend.surface0 : ThemeBackend.base))
++        color: sideTimeDateRoot.isGrouped ? "transparent" : (sideTimeDateRoot.isSolid ? (sideTimeDateRoot.distinctPills ? (sideTimeDateRoot.isHovered ? ThemeBackend.surface0 : Qt.alpha(Qt.darker(ThemeBackend.surface0, 1.15), OpacityExt.pills)) : "transparent") : (sideTimeDateRoot.isHovered ? ThemeBackend.surface0 : ThemeBackend.base))
+         border.width: 0
+         visible: height > 0
+ 
+--- a/quickshell/bar/sidemodules/SideTopWidget.qml
++++ b/quickshell/bar/sidemodules/SideTopWidget.qml
+@@ -29,7 +29,7 @@
+ 
+     radius: ThemeBackend.borderRadius
+     border.width: 0
+-    color: isGrouped ? "transparent" : (isSolid ? (distinctPills ? Qt.darker(ThemeBackend.surface0, 1.15) : "transparent") : ThemeBackend.base)
++    color: isGrouped ? "transparent" : (isSolid ? (distinctPills ? Qt.alpha(Qt.darker(ThemeBackend.surface0, 1.15), OpacityExt.pills) : "transparent") : ThemeBackend.base)
+     clip: true
+ 
+     opacity: (showLayout && moduleActive) ? ((barWindow && barWindow.barOpacity !== undefined) ? barWindow.barOpacity : 1.0) : 0.0
+--- a/quickshell/bar/sidemodules/SideTrayWidget.qml
++++ b/quickshell/bar/sidemodules/SideTrayWidget.qml
+@@ -102,7 +102,7 @@
+         anchors.fill: parent
+         radius: ThemeBackend.borderRadius
+         border.width: 0
+-        color: sideTrayWidgetRoot.isGrouped ? "transparent" : (sideTrayWidgetRoot.isSolid ? (sideTrayWidgetRoot.distinctPills ? Qt.darker(ThemeBackend.surface0, 1.15) : "transparent") : ThemeBackend.base)
++        color: sideTrayWidgetRoot.isGrouped ? "transparent" : (sideTrayWidgetRoot.isSolid ? (sideTrayWidgetRoot.distinctPills ? Qt.alpha(Qt.darker(ThemeBackend.surface0, 1.15), OpacityExt.pills) : "transparent") : ThemeBackend.base)
+         visible: height > 0
+     }
+ 
+--- a/quickshell/bar/sidemodules/SideVisWidget.qml
++++ b/quickshell/bar/sidemodules/SideVisWidget.qml
+@@ -76,7 +76,7 @@
+ 
+     radius: ThemeBackend.borderRadius
+     border.width: 0
+-    color: isGrouped ? "transparent" : (isSolid ? (distinctPills ? Qt.darker(ThemeBackend.surface0, 1.15) : "transparent") : ThemeBackend.base)
++    color: isGrouped ? "transparent" : (isSolid ? (distinctPills ? Qt.alpha(Qt.darker(ThemeBackend.surface0, 1.15), OpacityExt.pills) : "transparent") : ThemeBackend.base)
+     clip: true
+ 
+     opacity: (moduleActive && showLayout) ? ((barWindow && barWindow.barOpacity !== undefined) ? barWindow.barOpacity : 1.0) : 0.0
+--- a/quickshell/bar/sidemodules/SideWeatherWidget.qml
++++ b/quickshell/bar/sidemodules/SideWeatherWidget.qml
+@@ -83,7 +83,7 @@
+         width: parent.width
+         height: parent.height
+         radius: ThemeBackend.borderRadius
+-        color: sideWeatherWidgetRoot.isGrouped ? "transparent" : (sideWeatherWidgetRoot.isSolid ? (sideWeatherWidgetRoot.distinctPills ? (sideWeatherWidgetRoot.isHovered ? ThemeBackend.surface0 : Qt.darker(ThemeBackend.surface0, 1.15)) : "transparent") : (sideWeatherWidgetRoot.isHovered ? ThemeBackend.surface0 : ThemeBackend.base))
++        color: sideWeatherWidgetRoot.isGrouped ? "transparent" : (sideWeatherWidgetRoot.isSolid ? (sideWeatherWidgetRoot.distinctPills ? (sideWeatherWidgetRoot.isHovered ? ThemeBackend.surface0 : Qt.alpha(Qt.darker(ThemeBackend.surface0, 1.15), OpacityExt.pills)) : "transparent") : (sideWeatherWidgetRoot.isHovered ? ThemeBackend.surface0 : ThemeBackend.base))
+         border.width: 0
+         visible: height > 0
+ 
+--- a/quickshell/bar/sidemodules/SideWorkspacesWidget.qml
++++ b/quickshell/bar/sidemodules/SideWorkspacesWidget.qml
+@@ -238,7 +238,7 @@
+     Behavior on width { NumberAnimation { duration: 400; easing.type: Easing.OutQuint } }
+ 
+     radius: ThemeBackend.borderRadius
+-    color: isGrouped ? "transparent" : (isSolid ? (distinctPills ? Qt.darker(ThemeBackend.surface0, 1.15) : "transparent") : ThemeBackend.base)
++    color: isGrouped ? "transparent" : (isSolid ? (distinctPills ? Qt.alpha(Qt.darker(ThemeBackend.surface0, 1.15), OpacityExt.pills) : "transparent") : ThemeBackend.base)
+     border.width: 0
+     clip: true
+ 
 --- a/quickshell/bar/sidemodules/system/SideBatWidget.qml
 +++ b/quickshell/bar/sidemodules/system/SideBatWidget.qml
 @@ -51,7 +51,7 @@
