@@ -261,6 +261,8 @@ in
     enable = true;
     settings = {
       copy_on_select = "clipboard";
+      # отступ слева: иконки промпта не наезжают на рамку
+      window_padding_left = 14;
       background_opacity = 0.75;
       background = "#000000";
       foreground = "#ffffff";
