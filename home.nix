@@ -261,8 +261,6 @@ in
     enable = true;
     settings = {
       copy_on_select = "clipboard";
-      # Nerd Font: на нём рисуются иконки Starship-промпта
-      font_family = "Iosevka Nerd Font";
       background_opacity = 0.75;
       background = "#000000";
       foreground = "#ffffff";
