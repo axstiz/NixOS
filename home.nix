@@ -221,14 +221,6 @@ in
     executable = true;
   };
 
-  # --- Starship: промпт с иконками папок/git/время команды ---
-  # Палитра согласована с рисом (mauve/blue из Catppuccin Mocha);
-  # интеграция в bash включается HM-модулем сама (до fastfetch-строки).
-  programs.starship = {
-    enable = true;
-    settings = builtins.fromTOML (builtins.readFile ./starship/starship.toml);
-  };
-
   # fastfetch рисуется только на первом kitty-терминале текущего рабочего стола,
   # чтобы большой логотип не спамил при каждом окне/вкладке.
   # PATH для ~/bin — прямо в bashrc: kitty запускает bash НЕ как логин-шелл,
