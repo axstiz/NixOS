@@ -253,7 +253,7 @@ in
     enable = true;
     settings = {
       copy_on_select = "clipboard";
-      background_opacity = 0.85;
+      background_opacity = 0.75;
       background = "#000000";
       foreground = "#ffffff";
       cursor = "#c4a7e7";
