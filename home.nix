@@ -69,6 +69,16 @@ let
     cp ${./my_wallpaper.png} "$out/wallpaper.png"
     cp -a ${inputs.shell-wallpapers}/images/. "$out/"
   '';
+
+  # --- Brain: терминальный ASCII-плеер «мозга» из ZAPP (that-ponderer/ZAPP) ---
+  # Кадры анимации — запиненный снапшот репо (fetchFromGitHub),
+  # чтобы rebuild'ы были воспроизводимыми.
+  zapp-brain = pkgs.fetchFromGitHub {
+    owner = "that-ponderer";
+    repo = "ZAPP";
+    rev = "986ccff4312aea5317a45d3b0744043b2ba3202a";
+    hash = "sha256-9IXmXlOKHmj1rqOYPyH/Z3CWjHNIJH4QBf0tirJvyRg=";
+  };
 in
 {
   home.username = "litsummer";
@@ -149,6 +159,28 @@ in
           "$out/share/serpantinum/quickshell/guide/beta/BetaTab.qml"
         install -m0644 ${opacityGroupsJson} \
           "$out/share/serpantinum/quickshell/guide/beta/groups.json"
+        # --- Виджет «Brain» (ASCII-мозг из that-ponderer/ZAPP) + 4 новых
+        # терминал-стиль виджета (Matrix rain, CRT-часы, погода ASCII, Plasma):
+        # регистрация в WidgetRegistry + i18n ключи (en/ru) через патч,
+        # сами face-файлы кладём рядом с остальными faces.
+        patch -p1 < ${./serpantinum/brain-widget.patch}
+        install -m0644 ${./serpantinum/BrainFace.qml} \
+          "$out/share/serpantinum/quickshell/widgets/faces/BrainFace.qml"
+        install -m0644 ${./serpantinum/MatrixRainFace.qml} \
+          "$out/share/serpantinum/quickshell/widgets/faces/MatrixRainFace.qml"
+        install -m0644 ${./serpantinum/CrtClockFace.qml} \
+          "$out/share/serpantinum/quickshell/widgets/faces/CrtClockFace.qml"
+        install -m0644 ${./serpantinum/SkyFace.qml} \
+          "$out/share/serpantinum/quickshell/widgets/faces/SkyFace.qml"
+        install -m0644 ${./serpantinum/PlasmaFace.qml} \
+          "$out/share/serpantinum/quickshell/widgets/faces/PlasmaFace.qml"
+        # Точка приглушения warnings Qt Context2D (canvas): строка шрифта в
+        # MatrixRainFace для скорости оставлена в bare-варианте, из-за чего
+        # Context2D спамит "invalid font families" на каждый кадр. Гасим
+        # только категорию qt.qml.context2d у процесса шелла — на прочие
+        # Qt-приложения не влияет (это флаг quickshell --log-rules).
+        sed -i 's|quickshell -p "$MAIN_QML" 9>&- |quickshell --log-rules "qt.qml.context2d.warning=false" -p "$MAIN_QML" 9>\&- |' \
+          "$out/bin/.serpantinumd-wrapped"
         cd "$OLDPWD"
       '';
     });
@@ -191,10 +223,30 @@ in
 
   # fastfetch рисуется только на первом kitty-терминале текущего рабочего стола,
   # чтобы большой логотип не спамил при каждом окне/вкладке.
+  # PATH для ~/bin — прямо в bashrc: kitty запускает bash НЕ как логин-шелл,
+  # а ~/.profile (он же home.sessionPath) интерактивный bash тогда не читает.
   programs.bash = {
     enable = true;
-    initExtra = "$HOME/bin/mayfastfetch.sh";
+    initExtra = ''
+      export PATH="$HOME/bin:$PATH"
+      $HOME/bin/mayfastfetch.sh
+    '';
   };
+
+  # --- Brain: терминальный ASCII-плеер «мозга» из ZAPP ---
+  # Плеер bin/brain; кадры — запиненный снапшот репо, чтобы rebuild'ы были
+  # воспроизводимыми. Смотреть: просто `brain` в терминале, выход — Ctrl+C.
+  home.file."bin/brain" = {
+    source = ./bin/brain;
+    executable = true;
+  };
+
+  home.file.".local/share/brain-anim" = {
+    source = "${zapp-brain}/ZAPP/config/sharpshell/animations/brain";
+  };
+
+  # Чтобы `brain` (и остальные скрипты из ~/bin) были в PATH
+  home.sessionPath = [ "$HOME/bin" ];
 
   # --- Kitty: чёрный фон, белый текст, сиреневый акцент ---
   programs.kitty = {

@@ -1,0 +1,97 @@
+diff --git a/quickshell/widgets/WidgetRegistry.qml b/quickshell/widgets/WidgetRegistry.qml
+index 47889d4..0402ef1 100644
+--- a/quickshell/widgets/WidgetRegistry.qml
++++ b/quickshell/widgets/WidgetRegistry.qml
+@@ -246,6 +246,56 @@ QtObject {
+             variants: {
+                 "default": { file: "faces/BatteryFace.qml", icon: "1", label: I18n.t("widgets.variants.default") }
+             }
++        },
++        "brain": {
++            name: I18n.t("widgets.types.brain"),
++            icon: "🧠",
++            defaultWidth: 300,
++            defaultHeight: 160,
++            defaultVariant: "default",
++            variants: {
++                "default": { file: "faces/BrainFace.qml", icon: "1", label: I18n.t("widgets.variants.default") }
++            }
++        },
++        "matrix": {
++            name: I18n.t("widgets.types.matrix"),
++            icon: "🟩",
++            defaultWidth: 300,
++            defaultHeight: 220,
++            defaultVariant: "default",
++            variants: {
++                "default": { file: "faces/MatrixRainFace.qml", icon: "1", label: I18n.t("widgets.variants.default") }
++            }
++        },
++        "crtclock": {
++            name: I18n.t("widgets.types.crtclock"),
++            icon: "⏰",
++            defaultWidth: 360,
++            defaultHeight: 140,
++            defaultVariant: "default",
++            variants: {
++                "default": { file: "faces/CrtClockFace.qml", icon: "1", label: I18n.t("widgets.variants.default") }
++            }
++        },
++        "sky": {
++            name: I18n.t("widgets.types.sky"),
++            icon: "☁️",
++            defaultWidth: 280,
++            defaultHeight: 240,
++            defaultVariant: "default",
++            variants: {
++                "default": { file: "faces/SkyFace.qml", icon: "1", label: I18n.t("widgets.variants.default") }
++            }
++        },
++        "plasma": {
++            name: I18n.t("widgets.types.plasma"),
++            icon: "🌈",
++            defaultWidth: 320,
++            defaultHeight: 220,
++            defaultVariant: "default",
++            variants: {
++                "default": { file: "faces/PlasmaFace.qml", icon: "1", label: I18n.t("widgets.variants.default") }
++            }
+         }
+     })
+ 
+diff --git a/assets/languages/en.json b/assets/languages/en.json
+index 69282af..0941d3e 100755
+--- a/assets/languages/en.json
++++ b/assets/languages/en.json
+@@ -989,7 +989,12 @@
+       "visualizer": "Visualizer",
+       "user": "User",
+       "usage": "Usage",
+-      "battery": "Battery"
++      "battery": "Battery",
++      "brain": "Brain",
++      "matrix": "Matrix Rain",
++      "crtclock": "CRT Clock",
++      "sky": "ASCII Weather",
++      "plasma": "Plasma"
+     },
+     "variants": {
+       "digital": "Digital",
+diff --git a/assets/languages/ru.json b/assets/languages/ru.json
+index f43233d..9f95cf6 100755
+--- a/assets/languages/ru.json
++++ b/assets/languages/ru.json
+@@ -1033,7 +1033,12 @@
+       "visualizer": "Визуализатор",
+       "user": "Пользователь",
+       "usage": "Нагрузка",
+-      "battery": "Батарея"
++      "battery": "Батарея",
++      "brain": "Мозг",
++      "matrix": "Матрица",
++      "crtclock": "Часы CRT",
++      "sky": "Погода ASCII",
++      "plasma": "Плазма"
+     },
+     "variants": {
+       "digital": "Цифровые",

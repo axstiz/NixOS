@@ -77,11 +77,47 @@ in
 {
   imports = [ ./hardware-configuration.nix ];
 
-  # --- СИСТЕМА ---
+  # --- ЗАГРУЗКА ---
+  # Лимит старых ядер в меню загрузки: /boot всего 1 ГБ, по умолчанию
+  # накапливается ~100 записей и со временем ESP забивается.
   boot.loader.systemd-boot.enable = true;
+  boot.loader.systemd-boot.configurationLimit = 10;
   boot.loader.efi.canTouchEfiVariables = true;
   networking.hostName = "nixos";
   networking.networkmanager.enable = true;
+
+  # --- SWAP ---
+  # Сжатая подкачка в RAM: дёшево и без износа SSD.
+  zramSwap.enable = true;
+  # Файл подкачки 16 ГБ на корне (ext4): страховка от OOM + база для гибернации.
+  # Файл создаётся автоматически при активации.
+  swapDevices = [{
+    device = "/var/lib/swapfile";
+    size = 16 * 1024;
+  }];
+
+  # --- ГИБЕРНАЦИЯ (suspend-to-disk) ---
+  # Образ ОЗУ пишется в /var/lib/swapfile; ядро при загрузке ищет его по
+  # resume=<раздел> resume_offset=<физблок первого экстента файла>.
+  # Offset посчитан один раз: sudo filefrag -v /var/lib/swapfile | grep -m1 '^ 0:' → 17915904.
+  # ВАЖНО: если вручную удалить/пересоздать swap-файл — offset пересчитать и обновить тут.
+  boot.resumeDevice = "/dev/nvme0n1p5";
+  boot.kernelParams = [ "resume_offset=17915904" ];
+
+  # --- КНОПКА ПИТАНИЯ ---
+  # Короткое нажатие: logind не перехватывает (по умолчанию он сразу выключает
+  # систему, не доходя до Hyprland) — событие XF86PowerOff попадает в бинд
+  # serpantinum lock из home.nix. Удержание ~5 сек: logind сам выключает систему.
+  services.logind.settings.Login = {
+    HandlePowerKey = "ignore";
+    HandlePowerKeyLongPress = "poweroff";
+  };
+
+  # --- SSD: еженедельный Trim (корень на ext4/NVMe) ---
+  services.fstrim.enable = true;
+
+  # --- fwupd: обновления прошивок устройств (BIOS/SSD/контроллеры) ---
+  services.fwupd.enable = true;
   time.timeZone = "Asia/Yekaterinburg";
   i18n.defaultLocale = "ru_RU.UTF-8";
 
