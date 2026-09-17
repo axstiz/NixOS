@@ -1,19 +1,19 @@
 # Starship prompt — lavender rice to match the serpantinum matugen theme.
-# Icons rely on a Nerd Font (kitty uses Iosevka Nerd Font, set in home.nix).
+# Icons rely on a Nerd Font (system installs Iosevka NF; kitty falls back
+# per glyph by default).
 
-format = "$directory$git_branch$git_status$cmd_duration$character"
+format = "$custom$git_branch$git_status$cmd_duration$character"
 add_newline = false
 
 [directory]
-style = "bold #cba6f7"
-read_only = " 🔒"
-truncation_length = 3
-truncate_to_repo = false
-fish_style_pwd_dir_length = 2
-truncation_symbol = "…/"
-home_symbol = "󰋜 ~"
-# pretty glyphs for common folders along the path
-substitutions = { "assets" = "󰈙 assets", "Documents" = " " , "Downloads" = " ", "Music" = " 󰎈", "Pictures" = " ", "Videos" = " " }
+disabled = true
+
+# every path SEGMENT gets its own color (cycles the palette as you dive
+# deeper); script installed by home-manager at ~/bin/path-rainbow.sh
+[custom.rainbow_path]
+command = "$HOME/bin/path-rainbow.sh"
+when = "true"
+format = "$output "
 
 [git_branch]
 format = "[[](#45475a)[$branch](bold #c4a7e7)[](#45475a) ]"
