@@ -229,13 +229,6 @@ in
     settings = builtins.fromTOML (builtins.readFile ./starship/starship.toml);
   };
 
-  # Кастомный модуль пути: каждый уровень глубины — свой цвет (RAINBOW_PATH),
-  # скрипт вызывается Starship'ом как [custom.rainbow_path]
-  home.file."bin/path-rainbow.sh" = {
-    source = ./starship/path-rainbow.sh;
-    executable = true;
-  };
-
   # fastfetch рисуется только на первом kitty-терминале текущего рабочего стола,
   # чтобы большой логотип не спамил при каждом окне/вкладке.
   # PATH для ~/bin — прямо в bashrc: kitty запускает bash НЕ как логин-шелл,
